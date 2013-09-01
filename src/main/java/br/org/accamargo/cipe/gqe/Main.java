@@ -56,10 +56,10 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		String owlPath = "file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop.owl";
-		String owlPath1 = "file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl";
-		String ecNS = "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#";
-		String oc2NS = "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
+		String owlPath = args[0];// "file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop.owl";
+		String owlPath1 = args[1];//"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl";
+		String ecNS = args[2];//"http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#";
+		String oc2NS =args[3];// "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
 		
 		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);
 		OntDocumentManager dm = model.getDocumentManager();
