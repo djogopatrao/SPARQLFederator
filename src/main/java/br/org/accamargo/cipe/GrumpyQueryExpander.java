@@ -81,7 +81,7 @@ public class GrumpyQueryExpander {
 		// obtem recursos do RDF referentes a estas classes (se existirem)
 		ArrayList<OntClass> resources = getResourcesFromString( list );
 		
-		// inicia constru‹o da ‡rvore sint‡tica
+		// inicia construï¿½ï¿½o da ï¿½rvore sintï¿½tica
 		return OpAsQuery.asQuery(Algebra.optimize(createPatternFromClasses( resources ))).toString();
 	}
 
@@ -127,10 +127,10 @@ public class GrumpyQueryExpander {
 						subclassSequence = createPatternFromClasses(ontSubClass);
 					} else
 					{
-						throw new Exception("N‹o sei lidar com isso: "+ontSubClass.getRDFType());
+						throw new Exception("Nï¿½o sei lidar com isso: "+ontSubClass.getRDFType());
 					}
 					
-					if ( subclassSequence != null ) {
+					if ( !subclassSequence.getElements().isEmpty() ) {
 						if ( tmp == null )
 							tmp = subclassSequence;
 						else
@@ -148,7 +148,7 @@ public class GrumpyQueryExpander {
 	}
 
 	/**
-	 * retorna um OpService referenciando o endpoint espec’fico com uma
+	 * retorna um OpService referenciando o endpoint especï¿½fico com uma
 	 * tripla do tipo
 	 * ?pct rdf:type ontclass 
 	 * 
@@ -168,7 +168,7 @@ public class GrumpyQueryExpander {
 		}
 
 	/**
-	 * Retorna um Array de classes que comp›e a interse‹o; se n‹o 
+	 * Retorna um Array de classes que compï¿½e a interseï¿½ï¿½o; se nï¿½o 
 	 * for do tipo IntersectionClass, retorna nulo; 
 	 * 
 	 * @param ontSubClass
@@ -237,7 +237,7 @@ public class GrumpyQueryExpander {
 	
 
 	/**
-	 * retorna classes definidas na ontologia de dom’nio
+	 * retorna classes definidas na ontologia de domï¿½nio
 	 * 
 	 * @param list lista de strings com os conceitos
 	 * @return lista de OntClass
