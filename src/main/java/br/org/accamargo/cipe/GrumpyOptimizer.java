@@ -12,6 +12,11 @@ import com.hp.hpl.jena.sparql.algebra.optimize.TransformDistinctToReduced;
 
 public class GrumpyOptimizer extends TransformCopy {
 
+
+
+    private int compareService( OpService left, OpService right ) {
+        return left.getService().toString().compareToIgnoreCase(right.getService().toString());
+    }
 	
 	@Override
 	public Op transform(OpJoin opJoin, Op left, Op right) {
@@ -24,7 +29,7 @@ public class GrumpyOptimizer extends TransformCopy {
 			Node rightServiceNode = ((OpService)right).getService();
 	
 			// merge
-			if ( leftServiceNode.equals(rightServiceNode) ) {
+            if ( compareService( (OpService)left, (OpService)right ) == 0 ) {
 				return new OpService(
 						leftServiceNode
 						, OpJoin.create( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
@@ -32,7 +37,7 @@ public class GrumpyOptimizer extends TransformCopy {
 			}
 	
 			// reorder
-			if (left.toString().compareToIgnoreCase(right.toString()) > 0 ) {
+			if ( compareService( (OpService)left, (OpService)right ) > 0 ) {
 				return OpJoin.create( right, left );
 			}
 		}
@@ -50,7 +55,7 @@ public class GrumpyOptimizer extends TransformCopy {
 			Node rightServiceNode = ((OpService)right).getService();
 	
 			// merge
-			if ( leftServiceNode.equals(rightServiceNode) ) {
+			if ( compareService( (OpService)left, (OpService)right ) == 0 ) {
 				return new OpService(
 						leftServiceNode
 						, new OpUnion( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
@@ -58,12 +63,12 @@ public class GrumpyOptimizer extends TransformCopy {
 			}
 	
 			// reorder
-			if (left.toString().compareToIgnoreCase(right.toString()) > 0 ) {
+			if ( compareService( (OpService)left, (OpService)right ) > 0 ) {
 				return new OpUnion( right, left );
 			}
 		}
 		// regra : UNION( UNION( WHATEVER, S1( x ) ) , S1( y ) ) => UNION( WHATEVER, S1( UNION (x,y) ) )
-		// @todo fazer o contr‡rio (left<=>right?)
+		// @todo fazer o contrario (left<=>right?)
 		if ( left instanceof OpUnion && right instanceof OpService
 				&& ((OpUnion)left).getRight() instanceof OpService
 				) {
@@ -73,7 +78,7 @@ public class GrumpyOptimizer extends TransformCopy {
 			OpService leftRightServ = ((OpService)leftUnion.getRight());
 			
 			// merge
-			if ( leftRightServ.getService().toString().equals(rightServ.getService().toString()) ) {
+			if ( compareService( leftRightServ, rightServ ) == 0 ) {
 				return new OpUnion(
 						leftUnion.getLeft(),
 						new OpService(
@@ -88,7 +93,7 @@ public class GrumpyOptimizer extends TransformCopy {
 			}
 	
 			// reorder
-			if ( leftRightServ.getService().toString().compareToIgnoreCase(rightServ.getService().toString()) > 0 ) {
+			if ( compareService( leftRightServ, rightServ ) > 0 ) {
 				return new OpUnion(
 						new OpUnion(
 								leftUnion.getLeft(),
@@ -123,7 +128,8 @@ public class GrumpyOptimizer extends TransformCopy {
 						, new_right_right = right_right;
 				
 				// merge lefts
-				if ( left_left.getService().toString().equals( right_left.getService().toString() ) ) {
+
+				if ( compareService( left_left , right_left ) == 0 ) {
 					new_left_left = 
 							new OpService(
 									left_left.getService(),
@@ -133,12 +139,14 @@ public class GrumpyOptimizer extends TransformCopy {
 					new_right_left = null;
 				} else
 					// reorder
-					if ( left_left.getService().toString().compareToIgnoreCase( right_left.getService().toString() ) > 0 ) {					
+
+					if ( compareService( left_left , right_left ) > 0 ) {
 						new_left_left = right_left;
 						new_right_left = left_left;
 				}
 				// merge rights
-				if ( left_right.getService().toString().equals( right_right.getService().toString() ) ) {
+
+				if ( compareService( left_right, right_right ) == 0 ) {
 					new_left_right = 
 							new OpService(
 									left_right.getService(),
@@ -148,7 +156,8 @@ public class GrumpyOptimizer extends TransformCopy {
 					new_right_right = null;
 				} else
 					// reorder
-					if ( left_right.getService().toString().compareToIgnoreCase( right_right.getService().toString() ) > 0 ) {					
+
+					if ( compareService( left_right, right_right ) == 0 ) {
 						new_left_right  = right_right;
 						new_right_right = left_right;
 				}
