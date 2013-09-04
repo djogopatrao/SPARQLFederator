@@ -47,6 +47,9 @@ public class GrumpyOptimizer extends TransformCopy {
 	@Override
 	public Op transform(OpUnion opUnion, Op left, Op right) {
 		
+		if ( canApplyJoinUnionRule( left, right ) )
+            return applyJoinUnionRule( opUnion, left, right );
+        else
 		// doppelganger #1
 		// regra : UNION( S1( x ), S1( y ) ) => S1( UNION (x,y) )
 		if ( ( left instanceof OpService && right instanceof OpService) ) {
@@ -178,13 +181,46 @@ public class GrumpyOptimizer extends TransformCopy {
 				
 
 			}
+			
+			
 		}
 		
 		
 		return super.transform(opUnion, left, right);
 	}
-
 	
+	private boolean canApplyJoinUnionRule( Op left, Op right ) {
+        // System.out.println( "can apply : " + left.toString() + " <=> " + right.toString() );
+	    return left instanceof OpJoin && right instanceof OpJoin;
+	}
+	
+	private Op applyJoinUnionRule( OpUnion opUnion, Op left, Op right ) {
+	    OpJoin l = (OpJoin) left;
+	    OpJoin r = (OpJoin) right;
+	    
+	    if ( opsAreIdentical( left, right ) ) {
+	        return left;
+	    }
+
+        if ( opsAreIdentical( l.getLeft(), r.getLeft() ) )
+            return OpJoin.create( l.getLeft(), new OpUnion( l.getRight() , r.getRight() ) ) ;
+        else
+        if ( opsAreIdentical( l.getRight(), r.getLeft() ) )
+            return OpJoin.create( l.getRight(), new OpUnion( l.getLeft() , r.getRight() ) ) ;
+        else
+        if ( opsAreIdentical( l.getRight(), r.getRight() ) )
+            return OpJoin.create( l.getRight(), new OpUnion( l.getLeft() , r.getLeft() ) ) ;
+	    
+	    return super.transform( opUnion, left, right );
+	}
+
+    private boolean opsAreIdentical( Op l, Op r ) {
+        // @TODO super lazy and probably disfunctional.
+        boolean re = l.toString().compareToIgnoreCase( r.toString() ) == 0;
+        if ( re )
+            System.out.println( "yes it is\n" + l.toString() + "= <=>\n=" + r.toString() + "=" );
+        return re;
+    }
 
 
 }
