@@ -148,8 +148,9 @@ public class GrumpyQueryExpander {
 	}
 
 	/**
-	 * retorna um OpService referenciando o endpoint espec�fico com uma
-	 * tripla do tipo
+	 * returns an OpService referencing specific endpoint with a triple
+	 * following the format:
+	 *
 	 * ?pct rdf:type ontclass 
 	 * 
 	 * @param endpointURL
