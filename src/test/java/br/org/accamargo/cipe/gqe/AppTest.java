@@ -84,7 +84,7 @@ public class AppTest
     
     public void testPlanner() throws Exception {
     	
-    	GrumpyPlanner x = new GrumpyPlanner();
+    	GrumpyCostEstimator x = new GrumpyCostEstimator();
 
     	x.getCostMap().setServiceCost("http://teste1/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(100));
     	x.getCostMap().setServiceCost("http://teste2/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(132));

@@ -10,7 +10,7 @@ import com.hp.hpl.jena.sparql.algebra.op.OpService;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
 
 
-public class GrumpyPlanner {
+public class GrumpyCostEstimator {
 
 	GrumpyCostMap costMap = new GrumpyCostMap();
 
