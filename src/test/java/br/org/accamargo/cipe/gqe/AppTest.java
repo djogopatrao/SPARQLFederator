@@ -82,7 +82,7 @@ public class AppTest
 //    }
     
     
-    public void testPlanner() throws Exception {
+    public void testEstimator() throws Exception {
     	
     	GrumpyCostEstimator x = new GrumpyCostEstimator();
 
@@ -106,6 +106,36 @@ public class AppTest
     			"{ ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> }" +
     			" } } "));   	
     	assertEquals( 236, x.start(op2) );
+    	
+    }
+    
+    public void testPlanner() throws Exception {
+    	
+    	GrumpyPlanner gp = new GrumpyPlanner();
+    	
+    	gp.getCostMap().setServiceCost("http://teste1/", "http://teste/#Class1", new GrumpyCost(100));
+    	gp.getCostMap().setServiceCost("http://teste2/", "http://teste/#Class1", new GrumpyCost(22));
+    	gp.getCostMap().setOperationCost("OpJoin", new GrumpyCost(1));
+    	gp.getCostMap().setOperationCost("OpUnion", new GrumpyCost(2));
+    	gp.getCostMap().setOperationCost("OpService", new GrumpyCost(1));
+    	gp.getCostMap().setOperationCost("OpBGP", new GrumpyCost(0));
+    	gp.getCostMap().setOperationCost("Op", new GrumpyCost(0));
+    	gp.getCostMap().setOperationCost("Triple", new GrumpyCost(0));
+
+    	Op op2 = Algebra.compile(QueryFactory.create("SELECT * {" +
+    			"{ SERVICE <http://teste1/> " +
+    			"{ ?a a <http://teste/#Class1> }" +
+    			"} UNION " +
+    			"{ SERVICE <http://teste2/> " +
+    			"{ ?a a <http://teste/#Class1> }" +
+    			" } } "));   	
+		op2 = Transformer.transform( gp, op2 );
+		String algebra_op2 = "(union\n" +
+				"  (service <http://teste2/>\n" +
+				"    (bgp (triple ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://teste/#Class1>)))\n" +
+				"  (service <http://teste1/>\n" +
+				"    (bgp (triple ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://teste/#Class1>))))\n";
+    	assertEquals(algebra_op2, op2.toString());
     	
     }
 }

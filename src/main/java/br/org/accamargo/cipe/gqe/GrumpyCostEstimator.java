@@ -8,8 +8,10 @@ import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
 import com.hp.hpl.jena.sparql.algebra.op.OpJoin;
 import com.hp.hpl.jena.sparql.algebra.op.OpService;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
+import com.hp.hpl.jena.sparql.function.library.min;
 
 
+//TODO work with GrumpyCost instead of int 
 public class GrumpyCostEstimator {
 
 	GrumpyCostMap costMap = new GrumpyCostMap();
@@ -26,7 +28,8 @@ public class GrumpyCostEstimator {
 	
 	private int go( OpJoin x ) throws Exception {
 		
-		int cost =go( x.getLeft() ) +  go( x.getRight() )  + costMap.getOperationCost("OpJoin").getValue();
+		//int cost =Math.min( go( x.getLeft() ) , go( x.getRight() ) )  + costMap.getOperationCost("OpJoin").getValue();
+		int cost =go( x.getLeft() )   + costMap.getOperationCost("OpJoin").getValue();
 //		System.out.println("Visita um join;");
 //		System.out.println("\tcost:"+cost);
 		return cost ;
@@ -101,7 +104,7 @@ public class GrumpyCostEstimator {
 		int cost = 0;
 		
 		if ( insideService != null ) {
-			System.out.println(t.getObject().toString());
+//			System.out.println(t.getObject().toString());
 			cost = costMap.getServiceCost( insideService, t.getObject().toString() ).getValue();
 		}
 		else cost = costMap.getOperationCost("Triple").getValue();

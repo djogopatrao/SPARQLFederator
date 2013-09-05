@@ -9,14 +9,18 @@ public class GrumpyCostMap {
 	private HashMap <String, GrumpyCost> operationCost = new HashMap <String, GrumpyCost>(); 
 
 	// 	TODO hardcoded
-	private GrumpyCost defaultCost = new GrumpyCost(1);
+	private GrumpyCost defaultCost = new GrumpyCost(0);
 	
 	GrumpyCost getServiceCost( String endpoint, String classname ) {
-		if ( ! serviceCost.containsKey(endpoint) )
+		if ( ! serviceCost.containsKey(endpoint) ) {
+//			System.out.println("default cost for service "+endpoint);
 			return defaultCost;
+		}
 
-		if ( ! serviceCost.get(endpoint).containsKey(classname) )
+		if ( ! serviceCost.get(endpoint).containsKey(classname) ){
+//			System.out.println("default cost for service "+endpoint + "class "+classname);
 			return defaultCost;
+		}
 		
 		return serviceCost.get(endpoint).get(classname);
 	}
