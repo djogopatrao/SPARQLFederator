@@ -43,41 +43,59 @@ public class AppTest
      * Rigourous Test :-)
      * @throws Exception 
      */
-    public void testApp() throws Exception
-    {
-    	GrumpyQueryExpander geq = new GrumpyQueryExpander(
-    			"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop_sem_subC50.owl",
-    			"http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#",
-    			"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl",
-    			"http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#"
-    			);
-    	String q1 = geq.createQueryFromClasses( Arrays.asList( "UndefinedClass") );
-    	System.out.println(q1);
-
-    	String realQuery = geq.createQueryFromClasses(Arrays.asList("C50_ECIIIb"));
-    	Op realOp = Algebra.compile(QueryFactory.create(realQuery));
-    	System.out.println(realQuery);
- 
-    	GrumpyOptimizer go = new GrumpyOptimizer();
-    	for( int i=1; i<50; i++)
-    		realOp = Transformer.transform( go, realOp );
-    	System.out.println(realOp);
+//    public void testApp() throws Exception
+//    {
+//    	GrumpyQueryExpander geq = new GrumpyQueryExpander(
+//    			"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop_sem_subC50.owl",
+//    			"http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#",
+//    			"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl",
+//    			"http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#"
+//    			);
+//    	String q1 = geq.createQueryFromClasses( Arrays.asList( "UndefinedClass") );
+//    	System.out.println(q1);
+//
+//    	String realQuery = geq.createQueryFromClasses(Arrays.asList("C50_ECIIIb"));
+//    	Op realOp = Algebra.compile(QueryFactory.create(realQuery));
+//    	System.out.println(realQuery);
+// 
+//    	GrumpyOptimizer go = new GrumpyOptimizer();
+//    	for( int i=1; i<50; i++)
+//    		realOp = Transformer.transform( go, realOp );
+//    	System.out.println(realOp);
+//    
+//    	String realQuery1 = geq.createQueryFromClasses(Arrays.asList("DoencaLocalAvancada","DoencaMetastatica"));
+//    	Op realOp1 = Algebra.compile(QueryFactory.create(realQuery1));
+//    	System.out.println(realQuery1);
+// 
+//    	for( int i=1; i<50; i++)
+//    		realOp1 = Transformer.transform( go, realOp1 );
+//    	System.out.println(realOp1);
+//    
+//    	String realQuery11 = geq.createQueryFromClasses(Arrays.asList("CriterioTriagem"));
+//    	Op realOp11 = Algebra.compile(QueryFactory.create(realQuery11));
+//    	System.out.println(realQuery11);
+// 
+//    	for( int i=1; i<50; i++)
+//    		realOp11 = Transformer.transform( go, realOp11 );
+//    	System.out.println(realOp11);
+//    
+//    }
     
-    	String realQuery1 = geq.createQueryFromClasses(Arrays.asList("DoencaLocalAvancada","DoencaMetastatica"));
-    	Op realOp1 = Algebra.compile(QueryFactory.create(realQuery1));
-    	System.out.println(realQuery1);
- 
-    	for( int i=1; i<50; i++)
-    		realOp1 = Transformer.transform( go, realOp1 );
-    	System.out.println(realOp1);
     
-    	String realQuery11 = geq.createQueryFromClasses(Arrays.asList("CriterioTriagem"));
-    	Op realOp11 = Algebra.compile(QueryFactory.create(realQuery11));
-    	System.out.println(realQuery11);
- 
-    	for( int i=1; i<50; i++)
-    		realOp11 = Transformer.transform( go, realOp11 );
-    	System.out.println(realOp11);
-    
+    public void testPlanner() throws Exception {
+    	
+    	GrumpyPlanner x = new GrumpyPlanner();
+    	Op op1 = Algebra.compile(QueryFactory.create("SELECT * { SERVICE <http://teste1/> { ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> } } "));   	
+    	assertEquals( 101, x.start(op1) );
+    	
+    	Op op2 = Algebra.compile(QueryFactory.create("SELECT * {" +
+    			"{ SERVICE <http://teste1/> " +
+    			"{ ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> }" +
+    			"} UNION " +
+    			"{ SERVICE <http://teste1/> " +
+    			"{ ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> }" +
+    			" } } "));   	
+    	assertEquals( 202, x.start(op2) );
+    	
     }
 }
