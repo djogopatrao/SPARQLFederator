@@ -21,18 +21,20 @@ public class GrumpyOptimizer extends TransformCopy {
 	@Override
 	public Op transform(OpJoin opJoin, Op left, Op right) {
 		
+		if ( canApplyUnionJoinRule( left, right ) )
+            return applyUnionJoinRule( opJoin, left, right );
+        else
 		// doppelganger #1
 		// regra : JOIN( S1( x ), S1( y ) ) => S1( JOIN( x, y ) )
 		if ( ( left instanceof OpService && right instanceof OpService) ) {
 			
 			Node leftServiceNode = ((OpService)left).getService();
-			Node rightServiceNode = ((OpService)right).getService();
 	
 			// merge
             if ( compareService( (OpService)left, (OpService)right ) == 0 ) {
 				return new OpService(
 						leftServiceNode
-						, OpJoin.create( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
+						, createOpJoinSorted( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
 						, false);
 			}
 	
@@ -55,13 +57,12 @@ public class GrumpyOptimizer extends TransformCopy {
 		if ( ( left instanceof OpService && right instanceof OpService) ) {
 		
 			Node leftServiceNode = ((OpService)left).getService();
-			Node rightServiceNode = ((OpService)right).getService();
 	
 			// merge
 			if ( compareService( (OpService)left, (OpService)right ) == 0 ) {
 				return new OpService(
 						leftServiceNode
-						, new OpUnion( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
+						, createOpUnionSorted( ((OpService)left).getSubOp(), ((OpService)right).getSubOp())
 						, false);
 			}
 	
@@ -82,11 +83,11 @@ public class GrumpyOptimizer extends TransformCopy {
 			
 			// merge
 			if ( compareService( leftRightServ, rightServ ) == 0 ) {
-				return new OpUnion(
+				return createOpUnionSorted(
 						leftUnion.getLeft(),
 						new OpService(
 								rightServ.getService(),
-								new OpUnion(
+								createOpUnionSorted(
 										rightServ.getSubOp(),
 										leftRightServ.getSubOp()
 										),
@@ -97,8 +98,8 @@ public class GrumpyOptimizer extends TransformCopy {
 	
 			// reorder
 			if ( compareService( leftRightServ, rightServ ) > 0 ) {
-				return new OpUnion(
-						new OpUnion(
+				return createOpUnionSorted(
+						createOpUnionSorted(
 								leftUnion.getLeft(),
 								rightServ
 								),
@@ -136,7 +137,7 @@ public class GrumpyOptimizer extends TransformCopy {
 					new_left_left = 
 							new OpService(
 									left_left.getService(),
-									new OpUnion( left_left.getSubOp(), right_left.getSubOp() ),
+									createOpUnionSorted( left_left.getSubOp(), right_left.getSubOp() ),
 									false
 									);
 					new_right_left = null;
@@ -153,7 +154,7 @@ public class GrumpyOptimizer extends TransformCopy {
 					new_left_right = 
 							new OpService(
 									left_right.getService(),
-									new OpUnion( left_right.getSubOp(), right_right.getSubOp() ),
+									createOpUnionSorted( left_right.getSubOp(), right_right.getSubOp() ),
 									false
 									);
 					new_right_right = null;
@@ -163,7 +164,7 @@ public class GrumpyOptimizer extends TransformCopy {
 					if ( compareService( left_right, right_right ) == 0 ) {
 						new_left_right  = right_right;
 						new_right_right = left_right;
-				}
+					}
 				
 				// 
 				OpUnion new_left = new OpUnion( new_left_left, new_left_right );
@@ -171,11 +172,11 @@ public class GrumpyOptimizer extends TransformCopy {
 				if ( new_right_left == null && new_right_right == null )
 					return new_left;
 				else if ( new_right_left != null )
-					return new OpUnion( new_left, new_right_left );
+					return createOpUnionSorted( new_left, new_right_left );
 				else if ( new_right_right != null )
-					return new OpUnion( new_left, new_right_right );
+					return createOpUnionSorted( new_left, new_right_right );
 				else
-					return new OpUnion( new_left, new OpUnion( new_right_left, new_right_right ) );
+					return createOpUnionSorted( new_left, createOpUnionSorted( new_right_left, new_right_right ) );
 
 				// quero ver depurar essa coisa.
 				
@@ -194,6 +195,15 @@ public class GrumpyOptimizer extends TransformCopy {
 	    return left instanceof OpJoin && right instanceof OpJoin;
 	}
 	
+	/**
+	 * Rule:
+	 * OpUnion( OpJoin(a,b), OpJoin(a,c) ) -> OpJoin(a, OpUnion( b,c ) )
+	 * 
+	 * @param opUnion
+	 * @param left
+	 * @param right
+	 * @return
+	 */	
 	private Op applyJoinUnionRule( OpUnion opUnion, Op left, Op right ) {
 	    OpJoin l = (OpJoin) left;
 	    OpJoin r = (OpJoin) right;
@@ -203,24 +213,81 @@ public class GrumpyOptimizer extends TransformCopy {
 	    }
 
         if ( opsAreIdentical( l.getLeft(), r.getLeft() ) )
-            return OpJoin.create( l.getLeft(), new OpUnion( l.getRight() , r.getRight() ) ) ;
+            return createOpJoinSorted( l.getLeft(), createOpUnionSorted( l.getRight() , r.getRight() ) ) ;
         else
         if ( opsAreIdentical( l.getRight(), r.getLeft() ) )
-            return OpJoin.create( l.getRight(), new OpUnion( l.getLeft() , r.getRight() ) ) ;
+            return createOpJoinSorted( l.getRight(), createOpUnionSorted( l.getLeft() , r.getRight() ) ) ;
         else
         if ( opsAreIdentical( l.getRight(), r.getRight() ) )
-            return OpJoin.create( l.getRight(), new OpUnion( l.getLeft() , r.getLeft() ) ) ;
+            return createOpJoinSorted( l.getRight(), createOpUnionSorted( l.getLeft() , r.getLeft() ) ) ;
 	    
 	    return super.transform( opUnion, left, right );
 	}
 
-    private boolean opsAreIdentical( Op l, Op r ) {
+	/**
+	 * Rule:
+	 * OpUnion( OpJoin(a,b), OpJoin(a,c) ) -> OpJoin(a, OpUnion( b,c ) )
+	 * 
+	 * 
+	 * @param left
+	 * @param right
+	 * @return 
+	 */
+	private boolean canApplyUnionJoinRule( Op left, Op right ) {
+        // System.out.println( "can apply : " + left.toString() + " <=> " + right.toString() );
+	    return left instanceof OpUnion && right instanceof OpUnion;
+	}
+	
+	/**
+	 * Rule:
+	 * OpJoin( OpUnion(a,b), OpUnion(a,c) ) -> OpUnion(a, OpJoin( b,c ) )
+	 * 
+	 * 
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	private Op applyUnionJoinRule( OpJoin opUnion, Op left, Op right ) {
+	    OpUnion l = (OpUnion) left;
+	    OpUnion r = (OpUnion) right;
+	    
+	    if ( opsAreIdentical( left, right ) ) {
+	        return left;
+	    }
+
+        if ( opsAreIdentical( l.getLeft(), r.getLeft() ) )
+            return createOpUnionSorted( l.getLeft(), createOpJoinSorted( l.getRight() , r.getRight() ) ) ;
+        else
+        if ( opsAreIdentical( l.getRight(), r.getLeft() ) )
+            return createOpUnionSorted( l.getRight(), createOpJoinSorted( l.getLeft() , r.getRight() ) ) ;
+        else
+        if ( opsAreIdentical( l.getRight(), r.getRight() ) )
+            return createOpUnionSorted( l.getRight(), createOpJoinSorted( l.getLeft() , r.getLeft() ) ) ;
+	    
+	    return super.transform( opUnion, left, right );
+	}
+	
+	private boolean opsAreIdentical( Op l, Op r ) {
         // @TODO super lazy and probably disfunctional.
         boolean re = l.toString().compareToIgnoreCase( r.toString() ) == 0;
-        if ( re )
-            System.out.println( "yes it is\n" + l.toString() + "= <=>\n=" + r.toString() + "=" );
+        // if ( re ) System.out.println( "yes it is\n" + l.toString() + "= <=>\n=" + r.toString() + "=" );
         return re;
     }
+	
+	private OpJoin createOpJoinSorted( Op l, Op r ){
+		if ( l.toString().compareToIgnoreCase( r.toString() ) > 0 )
+			return (OpJoin) OpJoin.create( r, l );
+		else
+			return (OpJoin) OpJoin.create( l, r );			
+	}
+	
+	private OpUnion createOpUnionSorted( Op l, Op r ) {
+		if ( l.toString().compareToIgnoreCase( r.toString() ) > 0 )
+			return new OpUnion( r, l );
+		else
+			return new OpUnion( l, r );
+	}
+	
 
 
 }

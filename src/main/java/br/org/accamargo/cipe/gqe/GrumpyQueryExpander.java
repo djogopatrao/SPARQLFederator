@@ -78,10 +78,12 @@ public class GrumpyQueryExpander {
 	
 	public String createQueryFromClasses( List<String> list ) throws Exception {
 		
-		// obtem recursos do RDF referentes a estas classes (se existirem)
 		ArrayList<OntClass> resources = getResourcesFromString( list );
 		
-		// inicia constru��o da �rvore sint�tica
+		// @TODO what is the correct way of treating this error?
+		if ( resources == null )
+			return "";
+				
 		return OpAsQuery.asQuery(Algebra.optimize(createPatternFromClasses( resources ))).toString();
 	}
 
@@ -249,7 +251,8 @@ public class GrumpyQueryExpander {
 		while ( it.hasNext() ) {
 			String class_name = it.next();
 			OntClass ontClass = model.getOntClass( this.domainNS + class_name );
-			return_values.add(ontClass);
+			if ( ontClass != null )
+				return_values.add(ontClass);
 		}
 		return return_values;
 	}
