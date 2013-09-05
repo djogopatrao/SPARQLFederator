@@ -85,6 +85,16 @@ public class AppTest
     public void testPlanner() throws Exception {
     	
     	GrumpyPlanner x = new GrumpyPlanner();
+
+    	x.getCostMap().setServiceCost("http://teste1/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(100));
+    	x.getCostMap().setServiceCost("http://teste2/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(132));
+    	x.getCostMap().setOperationCost("OpJoin", new GrumpyCost(1));
+    	x.getCostMap().setOperationCost("OpUnion", new GrumpyCost(2));
+    	x.getCostMap().setOperationCost("OpService", new GrumpyCost(1));
+    	x.getCostMap().setOperationCost("OpBGP", new GrumpyCost(0));
+    	x.getCostMap().setOperationCost("Op", new GrumpyCost(0));
+    	x.getCostMap().setOperationCost("Triple", new GrumpyCost(0));
+    	    	
     	Op op1 = Algebra.compile(QueryFactory.create("SELECT * { SERVICE <http://teste1/> { ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> } } "));   	
     	assertEquals( 101, x.start(op1) );
     	
@@ -92,10 +102,10 @@ public class AppTest
     			"{ SERVICE <http://teste1/> " +
     			"{ ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> }" +
     			"} UNION " +
-    			"{ SERVICE <http://teste1/> " +
+    			"{ SERVICE <http://teste2/> " +
     			"{ ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> }" +
     			" } } "));   	
-    	assertEquals( 202, x.start(op2) );
+    	assertEquals( 236, x.start(op2) );
     	
     }
 }
