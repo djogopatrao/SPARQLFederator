@@ -83,17 +83,17 @@ public class SPARQLFederator {
         try {
 			long startTime = System.nanoTime();			
 			ResultSet results = qexec.execSelect() ;
-			long runningTime = System.nanoTime() - startTime;
 			
-			System.out.println( "Results: " + results.getRowNumber() );
-			System.out.println( "Time: " + runningTime );
 			
 			for ( ; results.hasNext() ; )
 			{
-			QuerySolution soln = results.nextSolution() ;
-			RDFNode x = soln.get("pct") ;       // Get a result variable by name.
-			System.out.println(x);
+				QuerySolution soln = results.nextSolution() ;
+				RDFNode x = soln.get("pct") ;       // Get a result variable by name.
+				System.out.println(x);
 			}
+			long runningTime = System.nanoTime() - startTime;
+			System.out.println( "Results: " + results.getRowNumber() );
+			System.out.println( "Time: " + runningTime );
         } finally { qexec.close() ; }
 
 	}
