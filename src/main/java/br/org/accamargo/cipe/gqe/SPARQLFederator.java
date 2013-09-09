@@ -99,6 +99,7 @@ public class SPARQLFederator {
 	}
 
 	private static void setCosts(GrumpyPlanner gp, String dmNS) {
+		// ontocloud ontop
 		gp.getCostMap().setServiceCost("http://fisher:8080/openrdf-sesame/repositories/rhc", dmNS+"PacienteMaiorDe18Anos", new GrumpyCost(5));
 		gp.getCostMap().setServiceCost("http://fisher:8080/openrdf-sesame/repositories/rhc", dmNS+"Quimioterapia", new GrumpyCost(2));
 		gp.getCostMap().setServiceCost("http://fisher:8080/openrdf-sesame/repositories/rhc", dmNS+"AdenocarcinomaInvasivo", new GrumpyCost(1));
@@ -142,6 +143,49 @@ public class SPARQLFederator {
 		gp.getCostMap().setServiceCost("http://fisher:8080/openrdf-sesame/repositories/mv_repl", dmNS+"M0", new GrumpyCost(9));
 		gp.getCostMap().setServiceCost("http://fisher:8080/openrdf-sesame/repositories/mv_repl", dmNS+"M1", new GrumpyCost(4));
 		
+		// ontocloud d2r
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"AdenocarcinomaInvasivo", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"IHQ_HER2_Escore0", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"IHQ_HER2_Escore1", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"IHQ_HER2_Escore2", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"IHQ_HER2_Escore3", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2023/sparql", dmNS+"ISHRazaoHerCHR17Maior2.2", new GrumpyCost(2));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"C50", new GrumpyCost(53));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Cetuximab", new GrumpyCost(26));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Docetaxel", new GrumpyCost(24));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Erlotinib", new GrumpyCost(4));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Gefitinib", new GrumpyCost(0));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"M0", new GrumpyCost(102));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"M1", new GrumpyCost(9));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"N0", new GrumpyCost(21));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"N1", new GrumpyCost(7));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"N2", new GrumpyCost(5));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"N3", new GrumpyCost(2));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Paciente", new GrumpyCost(0));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"PacienteMaiorDe18Anos", new GrumpyCost(197));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Paclitaxel", new GrumpyCost(19));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"T0", new GrumpyCost(22));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"T1", new GrumpyCost(6));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"T2", new GrumpyCost(7));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"T3", new GrumpyCost(7));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"T4", new GrumpyCost(4));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"TaxanoHaMaisDeQuatroSemanas", new GrumpyCost(0));
+		gp.getCostMap().setServiceCost("http://fisher:2020/sparql", dmNS+"Trastuzumab", new GrumpyCost(9));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"AdenocarcinomaInvasivo", new GrumpyCost(5));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"C50", new GrumpyCost(3));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"M0", new GrumpyCost(9));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"M1", new GrumpyCost(2));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"N0", new GrumpyCost(8));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"N1", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"N2", new GrumpyCost(1));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"N3", new GrumpyCost(0));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"PacienteMaiorDe18Anos", new GrumpyCost(17));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"Quimioterapia", new GrumpyCost(5));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"T0", new GrumpyCost(0));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"T1", new GrumpyCost(4));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"T2", new GrumpyCost(3));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"T3", new GrumpyCost(2));
+		gp.getCostMap().setServiceCost("http://fisher:2024/sparql", dmNS+"T4", new GrumpyCost(1));
 	}
 
 }
