@@ -3,7 +3,14 @@ package br.org.accamargo.cipe.gqe;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.OpAsQuery;
@@ -68,6 +75,25 @@ public class SPARQLFederator {
         ct=0;
         while( m_query_opt.find()) ct++;
         System.out.println("Query optimizada SERVICES: " + ct);
+        
+        
+        Query query = QueryFactory.create(planned_query) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel() ) ;
+        try {
+			long startTime = System.nanoTime();			
+			ResultSet results = qexec.execSelect() ;
+			long runningTime = System.nanoTime() - startTime;
+			
+			System.out.println( "Results: " + results.getRowNumber() );
+			System.out.println( "Time: " + runningTime );
+			
+			for ( ; results.hasNext() ; )
+			{
+			QuerySolution soln = results.nextSolution() ;
+			RDFNode x = soln.get("pct") ;       // Get a result variable by name.
+			System.out.println(x);
+			}
+        } finally { qexec.close() ; }
 
 	}
 
