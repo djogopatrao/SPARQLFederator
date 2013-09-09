@@ -27,6 +27,7 @@ public class SPARQLFederator {
         String ocNS = args[1];
         String domainOntology = args[2];
         String dmNS = args[3];
+        String class_name = args[4];
         
         System.out.println(ontocloudOntology);
         
@@ -39,7 +40,7 @@ public class SPARQLFederator {
         gp.getCostMap().dump();
         
         System.out.println("Crit<8E>rio Triagem-----------");
-        String query2 = gqe.createQueryFromClasses(Arrays.asList("CriterioTriagem"));
+        String query2 = gqe.createQueryFromClasses(Arrays.asList(class_name));
         System.out.println(query2);
         Op op = Algebra.compile(QueryFactory.create(query2));
         
