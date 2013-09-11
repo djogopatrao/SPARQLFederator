@@ -16,8 +16,7 @@ import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.OpAsQuery;
 import com.hp.hpl.jena.sparql.algebra.Transformer;
 
-public class SPARQLFederator {
-
+public class SPARQLFederatorRun {
 	/**
 	 * @param args
 	 */
@@ -59,24 +58,26 @@ public class SPARQLFederator {
         String planned_query= OpAsQuery.asQuery(op).toString(); 
         System.out.println(planned_query);
         
-        
-        System.out.println("Original query:"+query2.length());
-        System.out.println("Optimized query:"+optimized_query.length());
-        System.out.println("Planned query:"+planned_query.length());
-        
-        Pattern p = Pattern.compile("SERVICE");
-        java.util.regex.Matcher m_query = p.matcher(query2);
-        java.util.regex.Matcher m_query_opt = p.matcher(optimized_query);
-        
-        int ct=0;
-        while( m_query.find()) ct++;
-        System.out.println("Query original SERVICES: " + ct);
-        
-        ct=0;
-        while( m_query_opt.find()) ct++;
-        System.out.println("Query optimizada SERVICES: " + ct);
-        
+
+        // execute query and yield results
+        Query query = QueryFactory.create(planned_query) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel() ) ;
+        try {
+			long startTime = System.nanoTime();			
+			ResultSet results = qexec.execSelect() ;
+			
+			for ( ; results.hasNext() ; )
+			{
+				QuerySolution soln = results.nextSolution() ;
+				RDFNode x = soln.get("pct") ;
+				System.out.println(x);
+			}
+			long runningTime = System.nanoTime() - startTime;
+			System.out.println( "Results: " + results.getRowNumber() );
+			System.out.println( "Time (ns): " + runningTime );
+        } finally { qexec.close() ; }
 
 	}
+
 
 }
