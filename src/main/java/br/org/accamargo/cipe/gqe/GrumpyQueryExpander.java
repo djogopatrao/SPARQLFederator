@@ -96,7 +96,7 @@ public class GrumpyQueryExpander {
 			OntClass ontclass = it.next();
 			ArrayList<Resource> endpoints = getEndpointsThatMap(ontclass);
 			ArrayList<OntClass> subclasses = getDirectSubClasses(ontclass);
-			
+
 			// adiciona endpoints base
 			Iterator<Resource> endpointIterator = endpoints.iterator();
 

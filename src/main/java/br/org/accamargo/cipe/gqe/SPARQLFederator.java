@@ -1,6 +1,8 @@
 package br.org.accamargo.cipe.gqe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.hp.hpl.jena.query.Query;
@@ -27,9 +29,11 @@ public class SPARQLFederator {
         String ocNS = args[1];
         String domainOntology = args[2];
         String dmNS = args[3];
-        String class_name = args[4];
         
-        System.out.println(ontocloudOntology);
+        List<String> classes_array = new ArrayList<String>();
+        for( int i = 4; i<args.length;i++) {
+        	classes_array.add(args[i]);
+        }
         
         GrumpyQueryExpander gqe = new GrumpyQueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
         GrumpyOptimizer go = new GrumpyOptimizer();
@@ -39,7 +43,7 @@ public class SPARQLFederator {
         StaticCosts.setCosts(gp,dmNS);
 
         // create query
-        String query2 = gqe.createQueryFromClasses(Arrays.asList(class_name));
+        String query2 = gqe.createQueryFromClasses(classes_array);
         System.out.println(query2);
         Op op = Algebra.compile(QueryFactory.create(query2));
         
