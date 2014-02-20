@@ -6,6 +6,7 @@ Expand SPARQL queries to perform inference on multiple endpoints.
 
 DEBUG compiling and running:
 ==========
+
 mvn clean package 
 
 
@@ -23,3 +24,4 @@ mvn clean compile assembly:single
 java -jar <jar-with-dependencies> federation_ontology.owl federation_namespace# domain_ontology.owl domainNamespace# class1[,classn]
 
 
+teste
