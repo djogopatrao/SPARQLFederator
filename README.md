@@ -4,6 +4,14 @@ SPARQLFederator
 Expand SPARQL queries to perform inference on multiple endpoints.
 
 
+Main documentation
+==================
+
+Find more information on our wiki page:
+
+https://github.com/djogopatrao/SPARQLFederator/wiki
+
+
 DEBUG compiling and running:
 ==========
 
