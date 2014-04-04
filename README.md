@@ -29,7 +29,7 @@ mvn exec:java -Dexec.mainClass="br.org.accamargo.cipe.gqe.SPARQLFederator" -Dexe
 
 mvn clean compile assembly:single
 
-java -jar <jar-with-dependencies> federation_ontology.owl federation_namespace# domain_ontology.owl domainNamespace# class1[,classn]
+java -jar jar-with-dependencies.jar federation_ontology.owl federation_namespace# domain_ontology.owl domainNamespace# class1[ classn]
 
 
 teste
