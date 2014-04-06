@@ -25,6 +25,11 @@ public class SPARQLFederator {
 	 */
 	public static void main(String[] args) throws Exception {
 		
+		if ( args.length != 5 ) {
+			System.out.println("Usage: SPARQLFederator <federation_ontology.owl> <domain_ontology.owl> <federation namespace> <domain namespace> <Class 1> ...");
+			return;
+		}
+
         String ontocloudOntology = args[0];
         String ocNS = args[1];
         String domainOntology = args[2];
@@ -40,45 +45,49 @@ public class SPARQLFederator {
         GrumpyPlanner gp = new GrumpyPlanner();
         
         // plan statistics
+        // TODO get it from a file
+        // TODO profile it
         StaticCosts.setCosts(gp,dmNS);
 
         // create query
         String query2 = gqe.createQueryFromClasses(classes_array);
-        System.out.println(query2);
+ //       System.out.println(query2);
         Op op = Algebra.compile(QueryFactory.create(query2));
         
         // optimize 
         // TODO how many times are enough? 
+        // TODO an option to set optimization
         for(int i=0; i<1000; i ++ ) 
                 op = Transformer.transform(go, op );
         
-        String optimized_query = OpAsQuery.asQuery(op).toString(); 
-        System.out.println(optimized_query);
+//        String optimized_query = OpAsQuery.asQuery(op).toString(); 
+//        System.out.println(optimized_query);
         
         // plan execution
         // TODO how many times are enough? 
+        // TODO an option to set planning
         for (int i=0; i<1000;i ++)
         	op = Transformer.transform(gp, op);
         
         String planned_query= OpAsQuery.asQuery(op).toString(); 
         System.out.println(planned_query);
         
+        // TODO those are stats - maybe set an option for that
+        // System.out.println("Original query:"+query2.length());
+        // System.out.println("Optimized query:"+optimized_query.length());
+        // System.out.println("Planned query:"+planned_query.length());
         
-        System.out.println("Original query:"+query2.length());
-        System.out.println("Optimized query:"+optimized_query.length());
-        System.out.println("Planned query:"+planned_query.length());
+//        Pattern p = Pattern.compile("SERVICE");
+//        java.util.regex.Matcher m_query = p.matcher(query2);
+//        java.util.regex.Matcher m_query_opt = p.matcher(optimized_query);
         
-        Pattern p = Pattern.compile("SERVICE");
-        java.util.regex.Matcher m_query = p.matcher(query2);
-        java.util.regex.Matcher m_query_opt = p.matcher(optimized_query);
-        
-        int ct=0;
-        while( m_query.find()) ct++;
-        System.out.println("Query original SERVICES: " + ct);
-        
-        ct=0;
-        while( m_query_opt.find()) ct++;
-        System.out.println("Query optimizada SERVICES: " + ct);
+//        int ct=0;
+//        while( m_query.find()) ct++;
+//        System.out.println("Query original SERVICES: " + ct);
+//        
+//        ct=0;
+//        while( m_query_opt.find()) ct++;
+//        System.out.println("Query optimizada SERVICES: " + ct);
         
 
 	}

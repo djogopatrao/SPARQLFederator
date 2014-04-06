@@ -55,7 +55,7 @@ public class Main {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-
+		
 		String owlPath = args[0];// "file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop.owl";
 		String owlPath1 = args[1];//"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl";
 		String ecNS = args[2];//"http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#";

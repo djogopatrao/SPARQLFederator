@@ -129,7 +129,7 @@ public class GrumpyQueryExpander {
 						subclassSequence = createPatternFromClasses(ontSubClass);
 					} else
 					{
-						throw new Exception("N�o sei lidar com isso: "+ontSubClass.getRDFType());
+						throw new Exception("Can't deal with this class: "+ontSubClass.getRDFType());
 					}
 					
 					if ( !subclassSequence.getElements().isEmpty() ) {
