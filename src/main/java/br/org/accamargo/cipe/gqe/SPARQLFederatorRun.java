@@ -37,9 +37,9 @@ public class SPARQLFederatorRun {
         
         System.out.println(ontocloudOntology);
         
-        GrumpyQueryExpander gqe = new GrumpyQueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
-        GrumpyOptimizer go = new GrumpyOptimizer();
-        GrumpyPlanner gp = new GrumpyPlanner();
+        QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
+        QueryOptimizer go = new QueryOptimizer();
+        QueryPlanner gp = new QueryPlanner();
         
         // plan statistics
         StaticCosts.setCosts(gp,dmNS);

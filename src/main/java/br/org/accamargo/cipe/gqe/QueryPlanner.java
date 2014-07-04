@@ -7,11 +7,11 @@ import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
 import com.hp.hpl.jena.sparql.algebra.op.OpJoin;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
 
-public class GrumpyPlanner extends TransformCopy {
+public class QueryPlanner extends TransformCopy {
 
-	GrumpyCostEstimator gce = new GrumpyCostEstimator();
+	QueryCostEstimator gce = new QueryCostEstimator();
 
-	public GrumpyCostMap getCostMap() {
+	public QueryCostMap getCostMap() {
 		return gce.getCostMap();
 	}
 	
@@ -93,7 +93,7 @@ public class GrumpyPlanner extends TransformCopy {
 	}
 
 	@Override
-	// TODO How to estimate cost for each triple inside a OpService? GrumpyCostEstimator won't work this way.
+	// TODO How to estimate cost for each triple inside a OpService? QueryCostEstimator won't work this way.
 	public Op transform(OpBGP opBGP) {
 
 		// Iterator<Triple> i = opBGP.getPattern().iterator();

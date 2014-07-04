@@ -10,7 +10,7 @@ import com.hp.hpl.jena.sparql.algebra.op.OpService;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
 import com.hp.hpl.jena.sparql.algebra.optimize.TransformDistinctToReduced;
 
-public class GrumpyOptimizer extends TransformCopy {
+public class QueryOptimizer extends TransformCopy {
 
 
 

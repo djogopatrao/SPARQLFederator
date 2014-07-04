@@ -40,9 +40,9 @@ public class SPARQLFederator {
         	classes_array.add(args[i]);
         }
         
-        GrumpyQueryExpander gqe = new GrumpyQueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
-        GrumpyOptimizer go = new GrumpyOptimizer();
-        GrumpyPlanner gp = new GrumpyPlanner();
+        QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
+        QueryOptimizer go = new QueryOptimizer();
+        QueryPlanner gp = new QueryPlanner();
         
         // plan statistics
         // TODO get it from a file

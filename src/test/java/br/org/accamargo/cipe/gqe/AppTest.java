@@ -9,8 +9,8 @@ import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.Transformer;
 
-import br.org.accamargo.cipe.gqe.GrumpyOptimizer;
-import br.org.accamargo.cipe.gqe.GrumpyQueryExpander;
+import br.org.accamargo.cipe.gqe.QueryOptimizer;
+import br.org.accamargo.cipe.gqe.QueryExpander;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -84,16 +84,16 @@ public class AppTest
     
     public void testEstimator() throws Exception {
     	
-    	GrumpyCostEstimator x = new GrumpyCostEstimator();
+    	QueryCostEstimator x = new QueryCostEstimator();
 
-    	x.getCostMap().setServiceCost("http://teste1/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(100));
-    	x.getCostMap().setServiceCost("http://teste2/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new GrumpyCost(132));
-    	x.getCostMap().setOperationCost("OpJoin", new GrumpyCost(1));
-    	x.getCostMap().setOperationCost("OpUnion", new GrumpyCost(2));
-    	x.getCostMap().setOperationCost("OpService", new GrumpyCost(1));
-    	x.getCostMap().setOperationCost("OpBGP", new GrumpyCost(0));
-    	x.getCostMap().setOperationCost("Op", new GrumpyCost(0));
-    	x.getCostMap().setOperationCost("Triple", new GrumpyCost(0));
+    	x.getCostMap().setServiceCost("http://teste1/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new QueryCost(100));
+    	x.getCostMap().setServiceCost("http://teste2/", "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada", new QueryCost(132));
+    	x.getCostMap().setOperationCost("OpJoin", new QueryCost(1));
+    	x.getCostMap().setOperationCost("OpUnion", new QueryCost(2));
+    	x.getCostMap().setOperationCost("OpService", new QueryCost(1));
+    	x.getCostMap().setOperationCost("OpBGP", new QueryCost(0));
+    	x.getCostMap().setOperationCost("Op", new QueryCost(0));
+    	x.getCostMap().setOperationCost("Triple", new QueryCost(0));
     	    	
     	Op op1 = Algebra.compile(QueryFactory.create("SELECT * { SERVICE <http://teste1/> { ?a a <http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#DoencaLocalAvancada> } } "));   	
     	assertEquals( 101, x.start(op1) );
@@ -111,16 +111,16 @@ public class AppTest
     
     public void testPlanner() throws Exception {
     	
-    	GrumpyPlanner gp = new GrumpyPlanner();
+    	QueryPlanner gp = new QueryPlanner();
     	
-    	gp.getCostMap().setServiceCost("http://teste1/", "http://teste/#Class1", new GrumpyCost(100));
-    	gp.getCostMap().setServiceCost("http://teste2/", "http://teste/#Class1", new GrumpyCost(22));
-    	gp.getCostMap().setOperationCost("OpJoin", new GrumpyCost(1));
-    	gp.getCostMap().setOperationCost("OpUnion", new GrumpyCost(2));
-    	gp.getCostMap().setOperationCost("OpService", new GrumpyCost(1));
-    	gp.getCostMap().setOperationCost("OpBGP", new GrumpyCost(0));
-    	gp.getCostMap().setOperationCost("Op", new GrumpyCost(0));
-    	gp.getCostMap().setOperationCost("Triple", new GrumpyCost(0));
+    	gp.getCostMap().setServiceCost("http://teste1/", "http://teste/#Class1", new QueryCost(100));
+    	gp.getCostMap().setServiceCost("http://teste2/", "http://teste/#Class1", new QueryCost(22));
+    	gp.getCostMap().setOperationCost("OpJoin", new QueryCost(1));
+    	gp.getCostMap().setOperationCost("OpUnion", new QueryCost(2));
+    	gp.getCostMap().setOperationCost("OpService", new QueryCost(1));
+    	gp.getCostMap().setOperationCost("OpBGP", new QueryCost(0));
+    	gp.getCostMap().setOperationCost("Op", new QueryCost(0));
+    	gp.getCostMap().setOperationCost("Triple", new QueryCost(0));
 
     	Op op2 = Algebra.compile(QueryFactory.create("SELECT * {" +
     			"{ SERVICE <http://teste1/> " +

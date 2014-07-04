@@ -12,13 +12,13 @@ import com.hp.hpl.jena.sparql.function.library.min;
 
 
 //TODO work with GrumpyCost instead of int 
-public class GrumpyCostEstimator {
+public class QueryCostEstimator {
 
-	GrumpyCostMap costMap = new GrumpyCostMap();
+	QueryCostMap costMap = new QueryCostMap();
 
 	private String insideService;
 	
-	public GrumpyCostMap getCostMap() { return costMap; }
+	public QueryCostMap getCostMap() { return costMap; }
 	
 
 	public int start( Op x ) throws Exception {

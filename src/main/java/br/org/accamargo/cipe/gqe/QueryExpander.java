@@ -33,7 +33,7 @@ import com.hp.hpl.jena.sparql.core.BasicPattern;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
-public class GrumpyQueryExpander {
+public class QueryExpander {
 
 	OntModel model;
 	private String ontocloudOntology;
@@ -62,7 +62,7 @@ public class GrumpyQueryExpander {
 		return domainNS;
 	}
 
-	public GrumpyQueryExpander(String ontocloudOntology, String ocNS, String domainOntology, String dmNS ) {
+	public QueryExpander(String ontocloudOntology, String ocNS, String domainOntology, String dmNS ) {
 		this.ontocloudOntology = ontocloudOntology;
 		this.domainOntology = domainOntology;
 		this.ontocloudNS = ocNS;

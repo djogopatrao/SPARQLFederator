@@ -3,15 +3,15 @@ package br.org.accamargo.cipe.gqe;
 import java.util.HashMap;
 
 // TODO allow configuration of join e union -> only service allowed!
-public class GrumpyCostMap {
+public class QueryCostMap {
 	
-	private HashMap <String, HashMap<String,GrumpyCost > > serviceCost = new HashMap <String, HashMap<String,GrumpyCost > >();
-	private HashMap <String, GrumpyCost> operationCost = new HashMap <String, GrumpyCost>(); 
+	private HashMap <String, HashMap<String,QueryCost > > serviceCost = new HashMap <String, HashMap<String,QueryCost > >();
+	private HashMap <String, QueryCost> operationCost = new HashMap <String, QueryCost>(); 
 
 	// 	TODO hardcoded
-	private GrumpyCost defaultCost = new GrumpyCost(0);
+	private QueryCost defaultCost = new QueryCost(0);
 	
-	GrumpyCost getServiceCost( String endpoint, String classname ) {
+	QueryCost getServiceCost( String endpoint, String classname ) {
 		if ( ! serviceCost.containsKey(endpoint) ) {
 //			System.out.println("default cost for service "+endpoint);
 			return defaultCost;
@@ -25,15 +25,15 @@ public class GrumpyCostMap {
 		return serviceCost.get(endpoint).get(classname);
 	}
 	
-	GrumpyCost setServiceCost( String endpoint, String classname, GrumpyCost value ) {
+	QueryCost setServiceCost( String endpoint, String classname, QueryCost value ) {
 		
 		if ( !serviceCost.containsKey(endpoint))
-			serviceCost.put(endpoint, new HashMap<String,GrumpyCost>());
+			serviceCost.put(endpoint, new HashMap<String,QueryCost>());
 		
 		return serviceCost.get(endpoint).put(classname, value);
 	}
 	
-	GrumpyCost getOperationCost( String operation ) {
+	QueryCost getOperationCost( String operation ) {
 		if ( ! operationCost.containsKey(operation) ) {
 //			System.out.println("default cost for operation "+operation);
 			return defaultCost;
@@ -43,7 +43,7 @@ public class GrumpyCostMap {
 		return operationCost.get(operation);
 	}
 	
-	GrumpyCost setOperationCost( String operation, GrumpyCost value ) {
+	QueryCost setOperationCost( String operation, QueryCost value ) {
 		
 		return operationCost.put(operation, value);
 	}
