@@ -138,4 +138,17 @@ public class AppTest
     	assertEquals(algebra_op2, op2.toString());
     	
     }
+    
+    /**
+     * @todo needs adding of RDF/XML files to make it work (queryexpanders works only with files!) 
+     * @throws Exception
+     */
+    public void testExpander() throws Exception {
+    	String ontocloudOntology = "";
+    	String ocNS = " http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
+    	String domainOntology = "";
+    	String dmNS = "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#";
+        QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
+
+    }
 }

@@ -62,6 +62,15 @@ public class QueryExpander {
 		return domainNS;
 	}
 
+	/**
+	 * create the instance and initialize the ontology model
+	 * 
+	 * @TODO the namespace for ontocloud could be hardcoded, so we (1) save one parameter and (2) force the usage of the correct classes
+	 * @param ontocloudOntology
+	 * @param ocNS
+	 * @param domainOntology
+	 * @param dmNS
+	 */
 	public QueryExpander(String ontocloudOntology, String ocNS, String domainOntology, String dmNS ) {
 		this.ontocloudOntology = ontocloudOntology;
 		this.domainOntology = domainOntology;
@@ -87,6 +96,18 @@ public class QueryExpander {
 		return OpAsQuery.asQuery(Algebra.optimize(createPatternFromClasses( resources ))).toString();
 	}
 
+	/**
+	 * this is the method that expands queries based on domain ontology axioms
+	 * and which endpoints are they defined
+	 * 
+	 * TODO semantics should be on different classes - so it`s easier to add more of it
+	 * TODO equivalence should be really easy to implement - however we'll need to check backwards.
+	 * that is, if A AND B EQUIVALENT_TO C => when querying C we query A and B, and VICE VERSA,
+	 * 
+	 * @param resources - a list of classes (assume that this is C1 AND C2 AND ... Cn)
+	 * @return OpSequence with SPARQL syntactic nodes corresponding to the desired expanded query
+	 * @throws Exception
+	 */
 	private OpSequence createPatternFromClasses(ArrayList<OntClass> resources) throws Exception {
 		OpSequence finalBP = OpSequence.create();
 		
@@ -97,23 +118,23 @@ public class QueryExpander {
 			ArrayList<Resource> endpoints = getEndpointsThatMap(ontclass);
 			ArrayList<OntClass> subclasses = getDirectSubClasses(ontclass);
 
-			// adiciona endpoints base
+			// create an UNION querying all SERVICEs that implements the current class
 			Iterator<Resource> endpointIterator = endpoints.iterator();
 
-			Op tmp = null;
+			Op currentNode = null;
 			while( endpointIterator.hasNext() ) {
 				
 				OpService service = createServiceNode(endpointIterator.next(),ontclass);
 				
-				if ( tmp == null ) {
-					tmp =  service;
+				if ( currentNode == null ) {
+					currentNode =  service;
 				}
 				else {
-					tmp = new OpUnion( service, tmp );
+					currentNode = new OpUnion( service, currentNode );
 				}
 			}
 			
-			// checa classes filhas
+			// now the inference semantics
 			if ( subclasses != null ) {
 
 				Iterator<OntClass> subclassesIterator = subclasses.iterator();
@@ -123,9 +144,11 @@ public class QueryExpander {
 					OpSequence  subclassSequence;
 					
 					if( ontSubClass.isIntersectionClass() ) {
+						// A AND B subclassof C
 						subclassSequence = createPatternFromClasses(getIntersectionClasses(ontSubClass));
 					} else 
 					if ( ontSubClass.isClass() ) {
+						// A  subclassof C
 						subclassSequence = createPatternFromClasses(ontSubClass);
 					} else
 					{
@@ -133,17 +156,17 @@ public class QueryExpander {
 					}
 					
 					if ( !subclassSequence.getElements().isEmpty() ) {
-						if ( tmp == null )
-							tmp = subclassSequence;
+						if ( currentNode == null )
+							currentNode = subclassSequence;
 						else
-							tmp = new OpUnion( subclassSequence, tmp );
+							currentNode = new OpUnion( subclassSequence, currentNode );
 					}
 					
 				}
 			}				
 			
-			if ( tmp != null )
-				finalBP.add(tmp);
+			if ( currentNode != null )
+				finalBP.add(currentNode);
 		}
 		return finalBP;
 		
@@ -171,8 +194,8 @@ public class QueryExpander {
 		}
 
 	/**
-	 * Retorna um Array de classes que comp�e a interse��o; se n�o 
-	 * for do tipo IntersectionClass, retorna nulo; 
+	 * return an array of classes comprising the intersection; if it's
+	 * not a intersectionClass, returns null
 	 * 
 	 * @param ontSubClass
 	 * @return
@@ -202,12 +225,12 @@ public class QueryExpander {
 	}
 
 	/**
-	 * retorna uma lista de recursos referentes a endpoints 
-	 * que implementam a classe especificada
+	 * return a list of Resources, one for each endpoint implementing
+	 * the specified class
 	 * 
 	 * 
-	 * @param ontclass classe
-	 * @return endpoint que mapeia
+	 * @param ontclass class
+	 * @return list of resources mapping that class
 	 */
 	public ArrayList<Resource> getEndpointsThatMap(OntClass ontclass) {
 		String queryString = "SELECT ?system ?endpoint { ?system <"+this.ontocloudNS+"systemImplementsClass> <"+ontclass.getURI()+">; <"+this.ontocloudNS+"systemHasSparqlEndpoint> ?endpoint. }" ;
@@ -240,10 +263,10 @@ public class QueryExpander {
 	
 
 	/**
-	 * retorna classes definidas na ontologia de dom�nio
+	 * for each concept URI passed as string, create the corresponding OntClass (if any)
 	 * 
-	 * @param list lista de strings com os conceitos
-	 * @return lista de OntClass
+	 * @param list 
+	 * @return list
 	 */
 	public ArrayList<OntClass> getResourcesFromString(List<String> list) {
 		ArrayList<OntClass> return_values = new ArrayList<OntClass>();
