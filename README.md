@@ -11,6 +11,17 @@ Find more information on our wiki page:
 
 https://github.com/djogopatrao/SPARQLFederator/wiki
 
+Example
+=======
+
+You can try our live demo (see wiki page) or use the example contained here
+
+java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ns 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#' -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print A
+
+"-exec print" will print the expanded query; "-exec run" would execute it and yield results (that is, if there are working endpoints as defined on example/federation.owl)
+
+"A" is the class name (assume it is concatenated with domain_ns) you're querying for; try it with other classes (like B, or C). Play with domain.owl, but keep in mind SPARQLFederator implemented semantics (see the wiki).
+
 
 Arguments
 =========
@@ -43,16 +54,12 @@ DEBUG compiling and running:
 
 mvn clean package 
 
-
-mvn exec:java -Dexec.mainClass="br.org.accamargo.cipe.gqe.SPARQLFederator" -Dexec.args="-federation_ontology federation_ontology.owl -domain_ontology domain_ontology.owl  -domain_ns domainNamespace# class1 [,classn]"
-
-- SPARQLFederator class will create a federated query.
-- SPARQLFederatorRun class will create the query and run it.
+mvn exec:java -Dexec.mainClass="br.org.accamargo.cipe.gqe.SPARQLFederatorRun" -Dexec.args="-federation_ontology federation_ontology.owl -domain_ontology domain_ontology.owl  -domain_ns domainNamespace# class1 [,classn]"
 
 
-(sort of) PRODUCTION compiling and running( jar with all dependencies included)
+Production Compiling
 ====================
 
 mvn clean compile assembly:single
 
-java -jar jar-with-dependencies.jar -federation_ontology federation_ontology.owl -domain_ontology domain_ontology.owl  -domain_ns domainNamespace# class1 [...]
+
