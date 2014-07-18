@@ -20,18 +20,21 @@ It is mandatory specify at least the domain namespace, domain ontology file, fed
 usage: SPARQLFederator [options] <DOMAIN_CLASS> [...]
 
  -domain_ns <arg>             The domain namespace
+ 
  -domain_ontology <arg>       The domain ontology file
+ 
  -federation_ontology <arg>   The federation ontology file
+ 
  -help                        Shows the help message
- -ontocloud_ns <arg>          The federation namespace (default value:
-                              http://www.cipe.accamargo.org.br/ontologias/
-                              ontocloud2.owl)
- -optimizer <arg>             Execute a query optimizer: 'simple'
-                              (default) or 'none'
- -planner <arg>               Execute a query planner: 'simple' (default)
-                              or 'none'
- -query_type <arg>            The accepted query type: 'simple' (default)
-                              or 'sparql' (not implemented)
+ 
+ -ontocloud_ns <arg>          The federation namespace (default value: http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl)
+ 
+ -optimizer <arg>             Execute a query optimizer: 'simple' (default) or 'none'
+ 
+ -planner <arg>               Execute a query planner: 'simple' (default) or 'none'
+ 
+ -query_type <arg>            The accepted query type: 'simple' (default) or 'sparql' (not implemented)
+ 
  -stats                       Display statistics for queries
 
 
