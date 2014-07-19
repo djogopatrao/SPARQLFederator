@@ -16,11 +16,11 @@ Example
 
 You can try our live demo (see wiki page) or use the example contained here
 
-java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ns 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#' -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print A
+java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#A'
 
 "-exec print" will print the expanded query; "-exec run" would execute it and yield results (that is, if there are working endpoints as defined on example/federation.owl)
 
-"A" is the class name (assume it is concatenated with domain_ns) you're querying for; try it with other classes (like B, or C). Play with domain.owl, but keep in mind SPARQLFederator implemented semantics (see the wiki).
+"http://www.cipe.accamargo.org.br/ontologias/domain.owl#A" is the full IRI of the class you're querying for (see -domain_ns for saving space); try it with other classes (like B, or C). Add axioms and your own classes to domain.owl, but keep in mind SPARQLFederator implemented semantics (see the wiki).
 
 
 Arguments
