@@ -134,10 +134,10 @@ public class SPARQLFederatorRun {
 			showHelpMessage( "Error: specify domain ontology file name", opts );
 			return;
 		}
-		if ( dmNS.isEmpty() ) {
-			showHelpMessage( "Error: specify domain name space", opts );
-			return;
-		}
+//		if ( dmNS.isEmpty() ) {
+//			showHelpMessage( "Error: specify domain name space", opts );
+//			return;
+//		}
 		if ( ocNS.isEmpty() ) {
 			showHelpMessage( "Error: specify ontocloud namespace", opts );
 			return;
