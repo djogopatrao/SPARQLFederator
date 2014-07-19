@@ -31,14 +31,14 @@ public class SPARQLFederatorRun {
 	public static void main(String[] args) throws Exception {
 		// set default values here
 		String ontocloudOntology = "";
-        String ocNS = "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
-        String domainOntology = "";
-        String dmNS = "";
-        String query_type = "simple";
-        String optimizer = "simple";
-        String planner = "simple";
-        String exec = "run";
-        boolean stats = false;
+		String ocNS = "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
+		String domainOntology = "";
+		String dmNS = "";
+		String query_type = "simple";
+		String optimizer = "simple";
+		String planner = "simple";
+		String exec = "run";
+		boolean stats = false;
 
 		Options opts = new Options();
 		opts.addOption("federation_ontology", true, "The federation ontology file");
@@ -59,27 +59,27 @@ public class SPARQLFederatorRun {
 			showHelpMessage( "", opts );
 			return;
 		} 
-		
+
 		if ( cmd.hasOption("federation_ontology") ) {
 			ontocloudOntology = cmd.getOptionValue("federation_ontology");
 		}
-		
+
 		if ( cmd.hasOption("domain_ontology") ) {
 			domainOntology = cmd.getOptionValue("domain_ontology");
 		}
-		
+
 		if ( cmd.hasOption("ontocloud_ns") ) {
 			ocNS = cmd.getOptionValue("ontocloud_ns");
 		}
-		
+
 		if ( cmd.hasOption("domain_ns") ) {
 			dmNS = cmd.getOptionValue("domain_ns");
 		}
-		
+
 		if ( cmd.hasOption("stats") ) {
 			stats = true;
 		}
-		
+
 		if ( cmd.hasOption("query_type") ) {
 			if( cmd.getOptionValue("query_type").equals("simple") ) {
 				// no action for now
@@ -92,7 +92,7 @@ public class SPARQLFederatorRun {
 				return;
 			}
 		}
-		
+
 		if ( cmd.hasOption("optimizer") ) {
 			if( cmd.getOptionValue("optimizer").equals("simple") ) {
 				optimizer = "simple";
@@ -103,7 +103,7 @@ public class SPARQLFederatorRun {
 				return;
 			}
 		}		
-		
+
 		if ( cmd.hasOption("planner") ) {
 			if( cmd.getOptionValue("planner").equals("simple") ) {
 				planner = "simple";
@@ -134,10 +134,7 @@ public class SPARQLFederatorRun {
 			showHelpMessage( "Error: specify domain ontology file name", opts );
 			return;
 		}
-//		if ( dmNS.isEmpty() ) {
-//			showHelpMessage( "Error: specify domain name space", opts );
-//			return;
-//		}
+
 		if ( ocNS.isEmpty() ) {
 			showHelpMessage( "Error: specify ontocloud namespace", opts );
 			return;
@@ -146,56 +143,56 @@ public class SPARQLFederatorRun {
 			showHelpMessage( "Error: specify at least one class", opts );
 			return;
 		} 		
-		
+
 		// thats the query, actually
 		List<String> classes_array = cmd.getArgList();
 
-        QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
+		QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
 
-        // create query from the arguments
-        // TODO strategy for loading the query (so we can use sparql as well) (github #10)
-        String working_query = gqe.createQueryFromClasses(classes_array);
-        Op op = Algebra.compile(QueryFactory.create(working_query));
+		// create query from the arguments
+		// TODO strategy for loading the query (so we can use sparql as well) (github #10)
+		String working_query = gqe.createQueryFromClasses(classes_array);
+		Op op = Algebra.compile(QueryFactory.create(working_query));
 
-        // optimize
-        // TODO implement strategy here (github #11)
-        if ( optimizer.equals("none") ) {
-        	// do nothing
-        } else
-        if ( optimizer.equals("simple") ) {
-            QueryOptimizer go = new QueryOptimizer();
-	        // TODO how many times are enough? 
-	        for(int i=0; i<1000; i ++ ) 
-	        	op = Transformer.transform(go, op );
-	         working_query = OpAsQuery.asQuery(op).toString(); 
-        }
-        
-        
-        // plan execution
-        // TODO implement strategy here (github #9)
-        if ( planner.equals("none") ) {
-        	// do nothing
-        } else
-    	if (planner.equals("simple") ) {
-            QueryPlanner gp = new QueryPlanner();
-            // plan statistics
-            StaticCosts.setCosts(gp,dmNS);
-    		// TODO how many times are enough?
-    		for (int i=0; i<1000;i ++)
-    			op = Transformer.transform(gp, op);
-        
-    		working_query = OpAsQuery.asQuery(op).toString(); 
-    	}
-        
+		// optimize
+		// TODO implement strategy here (github #11)
+		if ( optimizer.equals("none") ) {
+			// do nothing
+		} else
+			if ( optimizer.equals("simple") ) {
+				QueryOptimizer go = new QueryOptimizer();
+				// TODO how many times are enough? 
+				for(int i=0; i<1000; i ++ ) 
+					op = Transformer.transform(go, op );
+				working_query = OpAsQuery.asQuery(op).toString(); 
+			}
 
-        // execute query and yield results
-        if ( exec.equals("run") ) {
-	        Query query = QueryFactory.create(working_query) ;
-	        QueryExecution qexec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel() ) ;
-	        try {
+
+		// plan execution
+		// TODO implement strategy here (github #9)
+		if ( planner.equals("none") ) {
+			// do nothing
+		} else
+			if (planner.equals("simple") ) {
+				QueryPlanner gp = new QueryPlanner();
+				// plan statistics
+				StaticCosts.setCosts(gp,dmNS);
+				// TODO how many times are enough?
+				for (int i=0; i<1000;i ++)
+					op = Transformer.transform(gp, op);
+
+				working_query = OpAsQuery.asQuery(op).toString(); 
+			}
+
+
+		// execute query and yield results
+		if ( exec.equals("run") ) {
+			Query query = QueryFactory.create(working_query) ;
+			QueryExecution qexec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel() ) ;
+			try {
 				long startTime = System.nanoTime();			
 				ResultSet results = qexec.execSelect() ;
-				
+
 				for ( ; results.hasNext() ; )
 				{
 					QuerySolution soln = results.nextSolution() ;
@@ -207,10 +204,10 @@ public class SPARQLFederatorRun {
 					System.out.println( "Results: " + results.getRowNumber() );
 					System.out.println( "Time (ns): " + runningTime );
 				}
-	        } finally { qexec.close() ; }
-        } else if ( exec.equals("print") ) {
-        	System.out.println(working_query);
-        }
+			} finally { qexec.close() ; }
+		} else if ( exec.equals("print") ) {
+			System.out.println(working_query);
+		}
 
 	}
 
