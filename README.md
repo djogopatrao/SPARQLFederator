@@ -26,11 +26,11 @@ java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_
 Arguments
 =========
 
-It is mandatory specify at least the domain namespace, domain ontology file, federation ontology file, also one or more classes for querying.
+It is mandatory to specify at least the domain ontology file, the federation ontology file, and one or more classes for querying.
 
 usage: SPARQLFederator [options] <DOMAIN_CLASS> [...]
 
- -domain_ns <arg>             The domain namespace
+ -domain_ns <arg>             The domain namespace (if specified, will be appended before each of the queryied DOMAIN_CLASSes)
  
  -domain_ontology <arg>       The domain ontology file
  
