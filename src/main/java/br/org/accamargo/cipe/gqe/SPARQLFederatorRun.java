@@ -44,7 +44,7 @@ public class SPARQLFederatorRun {
 		opts.addOption("federation_ontology", true, "The federation ontology file");
 		opts.addOption("domain_ontology", true, "The domain ontology file");
 		opts.addOption("ontocloud_ns", true, "The federation namespace (default value: "+ocNS+")");
-		opts.addOption("domain_ns", true, "The domain namespace");
+		opts.addOption("domain_ns", true, "The domain namespace The domain namespace (if specified, will be appended before each of the queryied DOMAIN_CLASSes)");
 		opts.addOption("help",false,"Shows the help message");
 		opts.addOption("query_type", true, "The accepted query type: 'simple' (default) or 'sparql' (not implemented) " );
 		opts.addOption("optimizer", true, "Execute a query optimizer: 'simple' (default) or 'none'" );
