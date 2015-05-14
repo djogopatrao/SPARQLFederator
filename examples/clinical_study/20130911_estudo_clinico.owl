@@ -1,0 +1,807 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY dcterms "http://purl.org/dc/terms/" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY swrlb "http://www.w3.org/2003/11/swrlb#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY FISH "http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#FISH/" >
+]>
+
+
+<rdf:RDF xmlns="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#"
+     xml:base="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:FISH="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#FISH/"
+     xmlns:dcterms="http://purl.org/dc/terms/">
+    <owl:Ontology rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl">
+        <owl:versionInfo rdf:datatype="&xsd;string">1.0</owl:versionInfo>
+        <dc:created rdf:datatype="&rdfs;Literal">2013-09-11</dc:created>
+        <dc:description rdf:datatype="&xsd;string">This is an ontology for describing inclusion criteria used by study GLICO-0801 performed at A. C. Camargo Cancer Center, plus relevant clinical information and axioms.
+
+Created by Diogo F. C. Patrão as part of his PhD Thesis defended in 2014.</dc:description>
+        <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/3.0/"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/description -->
+
+    <owl:AnnotationProperty rdf:about="&dc;description"/>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#isMappedBySQL -->
+
+    <owl:AnnotationProperty rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#isMappedBySQL"/>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#relevancia -->
+
+    <owl:AnnotationProperty rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#relevancia"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#comment -->
+
+    <owl:AnnotationProperty rdf:about="&rdfs;comment"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BreastCancer"/>
+        <dc:description xml:lang="en">Instances are patients with TNM 6th edition CS IIIb or IIIc with T4.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe tem estadiamento TNM 6a edição equivalente a ECIIIb ou ECIIIc com T4.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AnatomicPathologyInformation -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AnatomicPathologyInformation">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients with data from anatomic pathology reports.</dc:description>
+        <dc:description xml:lang="pt">Dados constantes de um laudo de anatomia patológica atribuídos a um paciente.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy"/>
+        <dc:description xml:lang="en">Instances are patients that underwent treatment with Anti-Erb class drugs anytime in the past.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe é um paciente que realizou tratamento com drogas para tumores com perfil HER+ (terapias anti-erb)</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErbMoreThanFourWeeksAgo -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErbMoreThanFourWeeksAgo">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Treatment"/>
+        <dc:description xml:lang="en">Instances are patients that underwent treatment with Anti-Erb class drugs more than four weeks previous to the date of data extraction.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe é um paciente que realizou tratamento com drogas para tumores com perfil HER+ (terapias anti-erb) há mais de quatro semanas a contar da data de hoje.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BioMarkers -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BioMarkers">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients with test results (positive or negative) indicating biomarkers, specially those relevant to cancer diagnostic or treatment.</dc:description>
+        <dc:description xml:lang="pt">Resultados de exames indicando algum marcador molecular relevante no diagnóstico ou tratamento do cancer.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BreastCancer -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BreastCancer">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients diagnosed with breast cancer, regardless of the classification scheme used.</dc:description>
+        <dc:description xml:lang="pt">Pacientes com cancer de mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ICD10"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50 or any subcode of it. It&apos;s the parent class of subcodes C50.0-C50.9</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.0 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.0">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.0 - Malignant neoplasm of nipple and areola</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, mamilo ou areola</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.1 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.1">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.1 - Malignant neoplasm of central portion of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, porção central da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.2 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.2">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.2 - Malignant neoplasm of upper-inner quadrant of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, quadrante superior interno da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.3 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.3">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.3 - Malignant neoplasm of lower-inner quadrant of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, quadrante inferior interno da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.4 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.4">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.4 - Malignant neoplasm of upper-outer quadrant of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, quadrante superior externo da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.5 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.5">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.5 - Malignant neoplasm of lower-outer quadrant of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, quadrante inferior externo da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.6 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.6">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.6 - Malignant neoplasm of axillary tail of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, prolongamento axilar da mama</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.8 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.8">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.8 - Malignant neoplasm of overlapping sites of breast</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, lesão sobreposta</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.9 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50.9">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+        <dc:description xml:lang="en">Instances are patients classified with ICD10 code C50.9 - Malignant breast neoplasm,nos</dc:description>
+        <dc:description xml:lang="pt">Neoplasia maligna de mama, sem outra especificação</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIb -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIb">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease"/>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with Clinical Stage IIIb for Breast Cancer</dc:description>
+        <dc:description xml:lang="pt">Estadiamento de câncer de mama ECIIIb conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIc -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIc">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with Clinical Stage IIIc for Breast Cancer</dc:description>
+        <dc:description xml:lang="pt">Estadiamento de câncer de mama ECIIIc conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIV -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIV">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#MetastaticDisease"/>
+        <dc:description xml:lang="en">Instances are patients classified with Clinical Stage IV for Breast Cancer</dc:description>
+        <dc:description xml:lang="pt">Estadiamento de câncer de mama ECIV conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Subclasses detail the TNM staging data (6th version); Instances are patients with any TNM data.</dc:description>
+        <dc:description xml:lang="pt">Engloba conceitos relacionados ao estadiamento TNM de um paciente.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Cetuximab -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Cetuximab">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb"/>
+        <dc:description xml:lang="en">Instances are patients that used Cetuximab</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Cetuximab</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Treatment"/>
+        <dc:description xml:lang="en">Instances are patients that have been through Chemotherapy</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe é um paciente que realizou tratamento quimioterápico</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Docetaxel -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Docetaxel">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes"/>
+        <dc:description xml:lang="en">Instances are patients that used Docetaxel (aka Taxotere)</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Docetaxel (Taxotere)</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Erlotinib -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Erlotinib">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb"/>
+        <dc:description xml:lang="en">Instances are patients that used Erlotinib</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Erlotinib</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#FISH/CISH -->
+
+    <owl:Class rdf:about="&FISH;CISH">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AnatomicPathologyInformation"/>
+        <dc:description xml:lang="en">Instances are patients with data results from FISH/CISH reports.</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que tem informações obtidas por meio de FISH/CISH.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Gefitinib -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Gefitinib">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb"/>
+        <dc:description xml:lang="en">Instances are patients that used Gefitinib</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Gefitinib</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BioMarkers"/>
+        <dc:description xml:lang="en">Instances are patients with HER2 superexpressive tumours, regardless of methods used for diagnostic.</dc:description>
+        <dc:description xml:lang="pt">Paciente teve um tumor em que foi indicada superexpressao de HER2</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ICD10 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ICD10">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients classified with any ICD10 code.</dc:description>
+        <dc:description xml:lang="pt">Paciente classificado utilizando-se o código CID-10</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score0 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score0">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry"/>
+        <dc:description xml:lang="en">Instances are patients with report for a EGFR evaluation by IHC showed no staining. 
+ </dc:description>
+        <dc:description xml:lang="pt">Nenhuma coloração é observada nas células neoplásicas invasivas</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score1 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score1">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry"/>
+        <dc:description xml:lang="en">Instances are patients with report for a EGFR evaluation by IHC showed weak incomplete 
+ membrane staining in any 
+ proportion of tumor cells or weak, 
+ complete membrane staining in 
+less than 10% of cells. 
+ </dc:description>
+        <dc:description xml:lang="pt">Coloração fraca e incompleta de membrana em qualquer proporção de células neoplásicas invasivas / ou coloração fraca e completa em menos que 10% das células</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score2 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score2">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry"/>
+        <rdfs:comment>++</rdfs:comment>
+        <dc:description xml:lang="en">Instances are patients with report for a EGFR evaluation by IHC showed circumferential membrane staining that is 
+ incomplete and/or weak/moderatef
+ and within more than 10% of the 
+ invasive tumor cells; or complete and circumferential 
+ membrane staining that is intense and within ≤10% of the 
+ invasive tumor cells;
+ </dc:description>
+        <dc:description xml:lang="pt">Coloração completa de membrana que não é uniforme / ou coloração fraca, mas com óbvia (duvidoso) distribuição circunferencial, em no mínimo em 10% das células / ou intensa e completa coloração de membrana em 30% ou menos das células neopásicas invasivas.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score3 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score3">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry"/>
+        <rdfs:comment>+++</rdfs:comment>
+        <dc:description xml:lang="en">Instances are patients with report for a EGFR evaluation by IHC showed uniform intense membrane staining of more than 30% of invasive tumour cells. 
+ </dc:description>
+        <dc:description xml:lang="pt">Coloração uniforme e intensa da membrana em mais do que 30% das células neoplásicas invasivas.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ISHHerCHR17RatioGreaterThan2.2 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ISHHerCHR17RatioGreaterThan2.2">
+        <rdfs:subClassOf rdf:resource="&FISH;CISH"/>
+        <dc:description xml:lang="en">Instances are patients with report of FISH/CISH evaluation of the ratio of HER2/neu number of copies over copies of chromossome 17 greater than 2.2
+ </dc:description>
+        <dc:description xml:lang="pt">Instancia é um paciente que tem pelo menos um laudo de anatomia constando a razão de cópias do gene HER e cópias do Cromossomo 17 maior que 2.2, aferido por FISH ou CISH</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Imunohistochemistry">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AnatomicPathologyInformation"/>
+        <dc:description xml:lang="en">Instances are patients with imunohistochemistry (IHC) tests results on an anatomic pathology report</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que tem informações obtidas por meio de exame de imunohistoquímica</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BreastCancer"/>
+        <dc:description xml:lang="en">Instances are patients at least one pathology anatomic report with invasive adenocarcinoma diagnosis, any breast related subtype.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe teve pelo menos um laudo em que foi diagnosticado um adenocarcinoma invasivo, dos subtipos relevantes a mama.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with M0 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial M0 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M1 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M1">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with M1 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial M1 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#MetastaticDisease -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#MetastaticDisease">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#BreastCancer"/>
+        <dc:description xml:lang="en">Instances are patients with metastatic disease</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe tem  metástase à distância.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N0 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N0">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with N0 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial N0 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N1 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N1">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with N1 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial N1 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N2 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N2">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with N2 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial N2 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N3 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N3">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with N3 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial N3 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Paclitaxel -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Paclitaxel">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes"/>
+        <dc:description xml:lang="en">Instances are patients that used Paclitaxel</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Paclitaxel</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Patient -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Patient">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients that underwent at least one clinical encounter on AC Camargo Cancer Center</dc:description>
+        <dc:description xml:lang="pt">Instancias desta classe representam um paciente atendido no AC Camargo Cancer Center</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Patient"/>
+        <dc:description xml:lang="en">Instances are patients over 18 years old that underwent at least one clinical encounter on AC Camargo Cancer Center</dc:description>
+        <dc:description xml:lang="pt">Instancias desta classe representam um paciente atendido no AC Camargo Cancer Center com idade maior a 18 anos no momento em que esta consulta foi desempenhada</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#RelaxedSelectionCriteria -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#RelaxedSelectionCriteria">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Relaxed selection criteria for GLICO-0801 study (see concept SelectionCriteria); instead of specifiying the class Taxanes, uses Chemotherapy instead (as there&apos;s at least one important database that does not specify the chemotherapy class of drugs used, but only if any chemo at all)</dc:description>
+        <dc:description xml:lang="pt">Critério relaxado para seleção de pacientes para o estudo GLICO-801; ao invés de especificar que o paciente deve ter utilizado taxanos no passado, restringe a pacientes que fizeram uso de qualquer quimioterapia, para filtragem manual posterior.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#SelectionCriteria -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#SelectionCriteria">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Selection criteria for potential recruitment subjects for GLICO-0801 study; it is not the full inclusion and exclusion criterium set, but some that are registered on the patient EHR systems. </dc:description>
+        <dc:description xml:lang="pt">Critério para seleção de pacientes para o estudo GLICO-801; não representa os critérios de inclusão/exclusão completo, apenas alguns que podem ser encontrados nos bancos de dados.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T0 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T0">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with T0 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial T0 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T1 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T1">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with T1 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial T1 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T2 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T2">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with T2 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial T2 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T3 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T3">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with T3 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial T3 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4 -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#CancerStaging"/>
+        <dc:description xml:lang="en">Instances are patients classified with T4 (TNM-6th edition)</dc:description>
+        <dc:description xml:lang="pt">Estadiamento parcial T4 de câncer conforme TNM-6a. edição.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#TaxaneMoreThanFourWeeksAgo -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#TaxaneMoreThanFourWeeksAgo">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Treatment"/>
+        <dc:description xml:lang="en">Instances are patients that underwent treatment with Taxane class drugs  more than four weeks previous to the date of data extraction.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe é um paciente que realizou tratamento quimioterápico com medicamento da família dos Taxanos há mais de quatro semanas da data de hoje</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy"/>
+        <dc:description xml:lang="en">Instances are patients that underwent treatment with Taxane class drugs anytime in the past.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe é um paciente que realizou tratamento quimioterápico com medicamento da família dos Taxanos.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxol -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxol">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes"/>
+        <dc:description xml:lang="en">Instances are patients that used Taxol</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Taxol</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Trastuzumab -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Trastuzumab">
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AntiErb"/>
+        <dc:description xml:lang="en">Instances are patients that used Trastuzumab (Herceptin)</dc:description>
+        <dc:description xml:lang="pt">Instância é paciente que fez uso do medicamento Trastuzumab (Herceptin)</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Treatment -->
+
+    <owl:Class rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Treatment">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <dc:description xml:lang="en">Instances are patients that underwent any cancer treatment, such as surgery, radiotherapy, chemotherapy or others.</dc:description>
+        <dc:description xml:lang="pt">Instancia desta classe são pacientes que passaram por algum tratamento para câncer, cirúrgico, radioterápico, quimioterápico ou outro.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    <rdf:Description>
+        <dc:description xml:lang="en">Relaxed Selection criteria subtype - for advanced disease patients</dc:description>
+    </rdf:Description>
+    <rdf:Description>
+        <dc:description xml:lang="en">Selection criteria subtype - for advanced disease patients</dc:description>
+    </rdf:Description>
+    <rdf:Description>
+        <dc:description xml:lang="en">HER2 positive subtype - IHC score 2 (++) and HER2/CR17 ratio greater than 2.2</dc:description>
+    </rdf:Description>
+    <rdf:Description>
+        <dc:description xml:lang="en">Selection criteria subtype - for metastatic patients</dc:description>
+    </rdf:Description>
+    <rdf:Description>
+        <dc:description xml:lang="en">Definition of ADvanced Local Disease according to the inclusion criteria found of GLICO-0801 study</dc:description>
+    </rdf:Description>
+    <rdf:Description>
+        <dc:description xml:lang="en">Relaxed Selection criteria subtype - for metastatic patients</dc:description>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIc"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N3"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#SelectionCriteria"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#MetastaticDisease"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIb"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N1"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIb"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N2"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#RelaxedSelectionCriteria"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#MetastaticDisease"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#RelaxedSelectionCriteria"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Chemotherapy"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#IHQ_HER2_Score2"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#ISHHerCHR17RatioGreaterThan2.2"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIc"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIIIb"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M0"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#N0"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#T4"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50_CSIV"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#C50"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#M1"/>
+        </owl:intersectionOf>
+    </owl:Class>
+    <owl:Class>
+        <rdfs:subClassOf rdf:resource="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#SelectionCriteria"/>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#AdvancedLocalDisease"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#HER2positive"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#InvasiveAdenocarcinoma"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#PatientOlderThan18years"/>
+            <rdf:Description rdf:about="http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#Taxanes"/>
+        </owl:intersectionOf>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+
