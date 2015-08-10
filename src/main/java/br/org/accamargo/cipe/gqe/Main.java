@@ -1,51 +1,22 @@
 package br.org.accamargo.cipe.gqe;
 
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.hp.hpl.jena.datatypes.RDFDatatype;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.ontology.AllDifferent;
-import com.hp.hpl.jena.ontology.AnnotationProperty;
-import com.hp.hpl.jena.ontology.ComplementClass;
-import com.hp.hpl.jena.ontology.DataRange;
-import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.EnumeratedClass;
-import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.IntersectionClass;
-import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntDocumentManager;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.ontology.OntResource;
-import com.hp.hpl.jena.ontology.Ontology;
-import com.hp.hpl.jena.ontology.Profile;
-import com.hp.hpl.jena.ontology.Restriction;
-import com.hp.hpl.jena.ontology.UnionClass;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.AnonId;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFList;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.RDFVisitor;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
-import com.hp.hpl.jena.sparql.core.BasicPattern;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 public class Main {
@@ -56,17 +27,16 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		String owlPath = args[0];// "file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/ontocloud2full_ontop.owl";
-		String owlPath1 = args[1];//"file:///Users/diogopatrao/Dropbox/doutorado/ontocloud_ontop_package/20130713_estudo_clinico.owl";
-		String ecNS = args[2];//"http://www.cipe.accamargo.org.br/ontologias/estudo_clinico.owl#";
-		String oc2NS =args[3];// "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#";
+		String owlPath = args[0];
+		String owlPath1 = args[1];
+		String ecNS = args[2];
+		String oc2NS = args[3];
 		
 		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);
 		OntDocumentManager dm = model.getDocumentManager();
 		
 		model.read(owlPath, null);
 		model.read(owlPath1, null);
-
 
 		// listar subclasses imediatas de "Tratamento"
 		OntClass tratamento = model.getOntClass(ecNS+"Tratamento");
@@ -91,7 +61,7 @@ public class Main {
 			System.out.println(r2.getURI());
 		}
 
-		// listar subclasses imediatas de "CriterioTriagem", cuidando das classes de intersecção
+		// listar subclasses imediatas de "CriterioTriagem", cuidando das classes de intersecÔøΩÔøΩo
 		OntClass criterioTriagem = model.getOntClass(ecNS+"CriterioTriagem");
 		Iterator<OntClass> it2 = criterioTriagem.listSubClasses(true); // somente subclasses imediatas
 		while (it2.hasNext()) {
@@ -110,7 +80,7 @@ public class Main {
 			else if ( ontclass.isClass() ) {
 				System.out.println("Classe Simples: "+ontclass.getLocalName());
 			} else {
-				throw new Exception("Não sei lidar com isso!" + ontclass.getRDFType(true) );
+				throw new Exception("NÔøΩo sei lidar com isso!" + ontclass.getRDFType(true) );
 			}
 		}
 	}
