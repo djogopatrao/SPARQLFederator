@@ -16,7 +16,7 @@ Example
 
 You can try our live demo (see wiki page) or use the example contained here
 
-java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#A'
+java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print -query 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#A'
 
 "-exec print" will print the expanded query; "-exec run" would execute it and yield results (that is, if there are working endpoints as defined on example/federation.owl)
 
@@ -29,6 +29,8 @@ Arguments
 It is mandatory to specify at least the domain ontology file, the federation ontology file, and one or more classes for querying.
 
 usage: SPARQLFederator [options] <DOMAIN_CLASS> [...]
+
+ -query <query>               The query to be expanded (or run) in the syntax specified by -query_type
 
  -domain_ns <arg>             The domain namespace (if specified, will be appended before each of the queryied DOMAIN_CLASSes)
  
