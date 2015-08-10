@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import br.org.accamargo.cipe.gqe.QueryReader.ParsedQuery;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.ontology.OntClass;
@@ -85,7 +87,7 @@ public class QueryExpander {
 		this.rdfType = model.getOntProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 	}
 	
-	public String createQueryFromClasses( List<String> list ) throws Exception {
+	public String createQueryFromClasses( ParsedQuery list ) throws Exception {
 		
 		ArrayList<OntClass> resources = getResourcesFromString( list );
 		
@@ -268,7 +270,7 @@ public class QueryExpander {
 	 * @param list 
 	 * @return list
 	 */
-	public ArrayList<OntClass> getResourcesFromString(List<String> list) {
+	public ArrayList<OntClass> getResourcesFromString(ParsedQuery list) {
 		ArrayList<OntClass> return_values = new ArrayList<OntClass>();
 		Iterator<String> it = list.iterator();
 		while ( it.hasNext() ) {
