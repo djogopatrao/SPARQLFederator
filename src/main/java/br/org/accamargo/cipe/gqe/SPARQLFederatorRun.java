@@ -1,10 +1,5 @@
 package br.org.accamargo.cipe.gqe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -150,9 +145,7 @@ public class SPARQLFederatorRun {
 		
 		BaseParser queryParser = ParserFactory.create(query_type);
 		
-		ParsedQuery parsed_query = queryParser.parse(query_string);
-		
-		String working_query = gqe.createQueryFromClasses( parsed_query );
+		String working_query = gqe.createQueryFromClasses( queryParser, query_string );
 		Op op = Algebra.compile(QueryFactory.create(working_query));
 
 		// optimize

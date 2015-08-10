@@ -3,14 +3,12 @@ package br.org.accamargo.cipe.gqe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
+import br.org.accamargo.cipe.gqe.QueryReader.BaseParser;
 import br.org.accamargo.cipe.gqe.QueryReader.ParsedQuery;
 
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntDocumentManager;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.ontology.OntProperty;
@@ -25,13 +23,10 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.OpAsQuery;
-import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
-import com.hp.hpl.jena.sparql.algebra.op.OpJoin;
 import com.hp.hpl.jena.sparql.algebra.op.OpSequence;
 import com.hp.hpl.jena.sparql.algebra.op.OpService;
 import com.hp.hpl.jena.sparql.algebra.op.OpTriple;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
-import com.hp.hpl.jena.sparql.core.BasicPattern;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
@@ -87,9 +82,10 @@ public class QueryExpander {
 		this.rdfType = model.getOntProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 	}
 	
-	public String createQueryFromClasses( ParsedQuery list ) throws Exception {
+	public String createQueryFromClasses( BaseParser queryParser, String queryString ) throws Exception {
 		
-		ArrayList<OntClass> resources = getResourcesFromString( list );
+		ParsedQuery parsedQuery = queryParser.parse(queryString,model);
+		ArrayList<OntClass> resources = parsedQuery.getArrayList();
 		
 		// @TODO what is the correct way of treating this error?
 		if ( resources == null )
@@ -261,29 +257,6 @@ public class QueryExpander {
 		}
 		return tmp;
 		
-	}
-	
-
-	/**
-	 * for each concept URI passed as string, create the corresponding OntClass (if any)
-	 * 
-	 * @param list 
-	 * @return list
-	 */
-	public ArrayList<OntClass> getResourcesFromString(ParsedQuery list) {
-		ArrayList<OntClass> return_values = new ArrayList<OntClass>();
-		Iterator<String> it = list.iterator();
-		while ( it.hasNext() ) {
-			String class_name = it.next();
-			OntClass ontClass = model.getOntClass( this.domainNS + class_name );
-			if ( ontClass != null )
-				return_values.add(ontClass);
-		}
-		return return_values;
-	}
-	
-	
-
-	
+	}	
 
 }
