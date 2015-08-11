@@ -39,8 +39,8 @@ public class DlParser implements BaseParser {
 			Class [] param = new Class[2];
 			param[0] = Iterator.class;
 			param[1] = ParsedQuery.class;
-			Method stateMethod = this.getClass().getDeclaredMethod(state, param);
 			System.out.println("Parser in state "+state);
+			Method stateMethod = this.getClass().getDeclaredMethod(state, param);
 			state = (String) stateMethod.invoke(this, queryElements, result);
 				
 		}
@@ -69,6 +69,8 @@ public class DlParser implements BaseParser {
 		{
 			parseProperty( tmp, queryElements, result );
 			state = "parseStateLogicalOperator";
+		} else {
+			throw new Exception("Don't know what the token "+tmp+" is");
 		}
 		return state;
 	}

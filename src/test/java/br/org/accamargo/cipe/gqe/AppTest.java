@@ -180,6 +180,11 @@ public class AppTest
 		System.out.println(parsedQuery.toString());
 		assertEquals( query, parsedQuery.toString() );
 		
+		query = "http://test/c some http://test/A";
+		parsedQuery = dlParser.parse(query , model);
+		System.out.println(parsedQuery.toString());
+		assertEquals( query, parsedQuery.toString() );
+		
 		QueryExpander qe = new QueryExpander(model, "http://test/", "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#");
 		OntProperty implementsClass = model.createObjectProperty("http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#systemImplementsClass");
 		OntProperty sparqlEndpoint = model.createObjectProperty("http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#systemHasSparqlEndpoint");
