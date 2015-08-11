@@ -12,6 +12,8 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.ontology.Restriction;
+import com.hp.hpl.jena.ontology.SomeValuesFromRestriction;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -23,10 +25,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.OpAsQuery;
+import com.hp.hpl.jena.sparql.algebra.op.OpBGP;
 import com.hp.hpl.jena.sparql.algebra.op.OpSequence;
 import com.hp.hpl.jena.sparql.algebra.op.OpService;
 import com.hp.hpl.jena.sparql.algebra.op.OpTriple;
 import com.hp.hpl.jena.sparql.algebra.op.OpUnion;
+import com.hp.hpl.jena.sparql.core.BasicPattern;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
@@ -119,64 +123,135 @@ public class QueryExpander {
 		OpSequence finalBP = OpSequence.create();
 		
 		Iterator<OntClass> it = resources.iterator();
+		OntProperty ontprop;
 		
 		while( it.hasNext() ) {
 			OntClass ontclass = it.next();
-			ArrayList<Resource> endpoints = getEndpointsThatMap(ontclass);
+			ontprop = this.rdfType;
+			Op currentNode = null;
+			
 			ArrayList<OntClass> subclasses = getDirectSubClasses(ontclass);
 
-			// create an UNION querying all SERVICEs that implements the current class
-			Iterator<Resource> endpointIterator = endpoints.iterator();
-
-			Op currentNode = null;
-			while( endpointIterator.hasNext() ) {
+			if ( ontclass.isRestriction() ) {
+				ontprop = ((Restriction)ontclass).getOnProperty();
+				ArrayList<Resource> endpoints = getEndpointsThatMap((OntClass) ((SomeValuesFromRestriction)ontclass).getSomeValuesFrom());
 				
-				OpService service = createServiceNode(endpointIterator.next(),ontclass);
+				// create an UNION querying all SERVICEs that implements the current class
+				Iterator<Resource> endpointIterator = endpoints.iterator();
+	
+				while( endpointIterator.hasNext() ) {
+					Resource i = endpointIterator.next();
+					
+					OpService service = createServiceNodeFromRestriction( i, (SomeValuesFromRestriction)ontclass );
+					
+					if ( currentNode == null ) {
+						currentNode =  service;
+					}
+					else {
+						currentNode = new OpUnion( service, currentNode );
+					}
+				}
 				
-				if ( currentNode == null ) {
-					currentNode =  service;
+			} else if ( ontclass.isClass() ) {
+				ArrayList<Resource> endpoints = getEndpointsThatMap(ontclass);
+	
+				// create an UNION querying all SERVICEs that implements the current class
+				Iterator<Resource> endpointIterator = endpoints.iterator();
+	
+				while( endpointIterator.hasNext() ) {
+					Resource i = endpointIterator.next();
+					
+					OpService service = createServiceNode( i, ontclass, ontprop );
+					
+					if ( currentNode == null ) {
+						currentNode =  service;
+					}
+					else {
+						currentNode = new OpUnion( service, currentNode );
+					}
 				}
-				else {
-					currentNode = new OpUnion( service, currentNode );
-				}
+				
+				// now the inference semantics
+				if ( subclasses != null ) {
+	
+					Iterator<OntClass> subclassesIterator = subclasses.iterator();
+					
+					while( subclassesIterator.hasNext()) {
+						OntClass ontSubClass = subclassesIterator.next();
+						System.out.println(">>>" + ontSubClass.getURI());
+						OpSequence  subclassSequence;
+						
+						if( ontSubClass.isRestriction() ) {
+							// (prop some C) subclassof C
+							subclassSequence = createPatternFromRestriction((SomeValuesFromRestriction)ontSubClass);
+						} else 
+						if( ontSubClass.isIntersectionClass() ) {
+							// A AND B subclassof C
+							subclassSequence = createPatternFromClasses(getIntersectionClasses(ontSubClass));
+						} else 
+						if ( ontSubClass.isClass() ) {
+							// A  subclassof C
+							subclassSequence = createPatternFromClasses(ontSubClass);
+						} else
+						{
+							throw new Exception("Can't deal with this class: "+ontSubClass.getRDFType());
+						}
+						
+						if ( !subclassSequence.getElements().isEmpty() ) {
+							if ( currentNode == null )
+								currentNode = subclassSequence;
+							else
+								currentNode = new OpUnion( subclassSequence, currentNode );
+						}
+						
+					}// end while
+				}// end if subclasses
+			}// end if negócio
+			if ( currentNode != null ) {
+				finalBP.add(currentNode);
 			}
 			
-			// now the inference semantics
-			if ( subclasses != null ) {
-
-				Iterator<OntClass> subclassesIterator = subclasses.iterator();
-				
-				while( subclassesIterator.hasNext()) {
-					OntClass ontSubClass = subclassesIterator.next();					
-					OpSequence  subclassSequence;
-					
-					if( ontSubClass.isIntersectionClass() ) {
-						// A AND B subclassof C
-						subclassSequence = createPatternFromClasses(getIntersectionClasses(ontSubClass));
-					} else 
-					if ( ontSubClass.isClass() ) {
-						// A  subclassof C
-						subclassSequence = createPatternFromClasses(ontSubClass);
-					} else
-					{
-						throw new Exception("Can't deal with this class: "+ontSubClass.getRDFType());
-					}
-					
-					if ( !subclassSequence.getElements().isEmpty() ) {
-						if ( currentNode == null )
-							currentNode = subclassSequence;
-						else
-							currentNode = new OpUnion( subclassSequence, currentNode );
-					}
-					
-				}
-			}				
-			
-			if ( currentNode != null )
-				finalBP.add(currentNode);
 		}
 		return finalBP;
 		
+	}
+
+	private OpSequence createPatternFromRestriction(SomeValuesFromRestriction ontSubClass) {
+		BasicPattern b = new BasicPattern();
+
+		Var tmp = Var.alloc(createTemporaryVariableName());
+		
+		b.add( (new Triple(
+				Var.alloc("pct"),
+				ontSubClass.getOnProperty().asNode(),
+				tmp)
+		));
+		
+		Op glump = new OpTriple( new Triple(
+				tmp,
+				this.rdfType.asNode(),
+				ontSubClass.getSomeValuesFrom().asNode()
+				));
+		
+		OntClass x= (OntClass) ontSubClass.getSomeValuesFrom();
+		Iterator<OntClass> subclasses = getDirectSubClasses(x).iterator();
+		while( subclasses.hasNext() ) {
+			glump = new OpUnion( glump, new OpTriple(new Triple(
+					tmp,
+					this.rdfType.asNode(),
+					subclasses.next().asNode()
+					)) );			
+		}
+		
+		OpSequence seq = OpSequence.create();
+		seq.add(new OpBGP(b));
+		seq.add( glump );
+		return seq;
+	}
+	
+	private int temporaryVariableCount =0;
+	private String createTemporaryVariableName() {
+		return "tmp"+this.temporaryVariableCount++;
 	}
 
 	/**
@@ -189,17 +264,24 @@ public class QueryExpander {
 	 * @param ontclass
 	 * @return
 	 */
-	private OpService createServiceNode(Resource endpointURL, OntClass ontclass) {
+	private OpService createServiceNode(Resource endpointURL, OntClass ontclass, OntProperty prop) {
 		return new OpService(
 				endpointURL.asNode(),
 				(Op) new OpTriple(new Triple(
 						Var.alloc("pct"),
-						this.rdfType.asNode(),
+						prop.asNode(),
 						ontclass.asNode()
 						)
 				), false );
 		}
-
+	
+	private OpService createServiceNodeFromRestriction( Resource endpointURL, SomeValuesFromRestriction ontSubClass ) {
+		return new OpService(
+				endpointURL.asNode(),
+				createPatternFromRestriction(ontSubClass),
+				false );
+	}
+	
 	/**
 	 * return an array of classes comprising the intersection; if it's
 	 * not a intersectionClass, returns null
@@ -258,11 +340,19 @@ public class QueryExpander {
 		return my_result;
 	}
 
+	/**
+	 * bug #14 - it should be getting subclasses of ( someValuesFrom G ) 
+	 * @param ontclass
+	 * @return
+	 */
 	public ArrayList<OntClass> getDirectSubClasses(OntClass ontclass) {
-		ExtendedIterator<OntClass> list = ontclass.listSubClasses(true);
+		ExtendedIterator<OntClass> list = ontclass.listSubClasses(false);
 		ArrayList<OntClass> tmp = new ArrayList<OntClass>();
+		System.out.println("getting subclasses for " + ontclass.getClass().toString() );
 		while( list.hasNext() ) {
-			tmp.add(list.next());
+			OntClass t = list.next();
+			System.out.println("\t" + t.toString() );
+			tmp.add(t);
 		}
 		return tmp;
 		

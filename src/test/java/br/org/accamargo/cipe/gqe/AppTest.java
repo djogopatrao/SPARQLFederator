@@ -198,6 +198,14 @@ public class AppTest
 		
 		String newQuery = qe.createQueryFromClasses( dlParser, "http://test/A" );
 		System.out.println(newQuery);
+
+    
+    	Op op2 = Algebra.compile(QueryFactory.create("SELECT ?pct WHERE {" +
+    			"?pct <http://teste/prop> [ a <http://teste/class> ]" +
+    			"}"));
+    	System.out.println(op2.toString());
+
+    
     }
 
 }
