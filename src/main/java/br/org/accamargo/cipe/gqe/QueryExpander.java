@@ -82,6 +82,15 @@ public class QueryExpander {
 		this.rdfType = model.getOntProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 	}
 	
+	public QueryExpander( OntModel model, String ocNS, String dmNS ) {
+		this.model = model;
+		this.ontocloudNS = ocNS;
+		this.domainNS = dmNS;
+
+		// shortcuts
+		this.rdfType = model.getOntProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+	}
+	
 	public String createQueryFromClasses( BaseParser queryParser, String queryString ) throws Exception {
 		
 		ParsedQuery parsedQuery = queryParser.parse(queryString,model);

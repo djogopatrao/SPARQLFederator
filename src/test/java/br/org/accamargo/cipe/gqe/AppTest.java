@@ -4,13 +4,24 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.ontology.impl.OntologyImpl;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.impl.StatementBase;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.algebra.Transformer;
 
 import br.org.accamargo.cipe.gqe.QueryOptimizer;
 import br.org.accamargo.cipe.gqe.QueryExpander;
+import br.org.accamargo.cipe.gqe.QueryReader.DlParser;
+import br.org.accamargo.cipe.gqe.QueryReader.ParsedQuery;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -21,7 +32,7 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
-    /**
+    	/**
      * Create the test case
      *
      * @param testName name of the test case
@@ -151,4 +162,37 @@ public class AppTest
 //        QueryExpander gqe = new QueryExpander(ontocloudOntology, ocNS, domainOntology, dmNS); 
 //
 //    }
+    
+    
+    public void testDlParser() throws Exception {
+    	DlParser dlParser = new DlParser();
+		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);
+		OntClass a = model.createClass("http://test/A");
+		OntClass b = model.createClass("http://test/B");
+		OntProperty c = model.createObjectProperty("http://test/c");
+		
+		String query = "http://test/A and http://test/B";
+		ParsedQuery parsedQuery = dlParser.parse(query , model);
+		assertEquals( query, parsedQuery.toString() );
+
+		query = "http://test/A and http://test/c some http://test/B";
+		parsedQuery = dlParser.parse(query , model);
+		System.out.println(parsedQuery.toString());
+		assertEquals( query, parsedQuery.toString() );
+		
+		QueryExpander qe = new QueryExpander(model, "http://test/", "http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#");
+		OntProperty implementsClass = model.createObjectProperty("http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#systemImplementsClass");
+		OntProperty sparqlEndpoint = model.createObjectProperty("http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#systemHasSparqlEndpoint");
+		OntClass endpoint = model.createClass("http://www.cipe.accamargo.org.br/ontologias/ontocloud2.owl#Endpoint");
+		Individual endpoint1 = endpoint.createIndividual("http://test:8890/sparql");
+		Individual e1 = model.getOntClass("http://www.w3.org/2002/07/owl#Thing").createIndividual("http://test/e1");
+		
+		e1.addProperty(implementsClass, a);
+		e1.addProperty(implementsClass, b);
+		e1.addProperty(sparqlEndpoint, endpoint1);
+		
+		String newQuery = qe.createQueryFromClasses( dlParser, "http://test/A" );
+		System.out.println(newQuery);
+    }
+
 }
