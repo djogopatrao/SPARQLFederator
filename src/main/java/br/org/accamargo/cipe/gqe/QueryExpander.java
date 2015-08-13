@@ -106,7 +106,9 @@ public class QueryExpander {
 				
 		return OpAsQuery.asQuery(Algebra.optimize(createPatternFromClasses( resources ))).toString();
 	}
-
+	private OpSequence createPatternFromClasses(ArrayList<OntClass> resources ) throws Exception {
+		return createPatternFromClasses( resources, Var.alloc("pct") );
+	}
 	/**
 	 * this is the method that expands queries based on domain ontology axioms
 	 * and which endpoints are they defined
@@ -116,23 +118,30 @@ public class QueryExpander {
 	 * that is, if A AND B EQUIVALENT_TO C => when querying C we query A and B, and VICE VERSA,
 	 * 
 	 * @param resources - a list of classes (assume that this is C1 AND C2 AND ... Cn)
+	 * @param baseVariable 
 	 * @return OpSequence with SPARQL syntactic nodes corresponding to the desired expanded query
 	 * @throws Exception
 	 */
-	private OpSequence createPatternFromClasses(ArrayList<OntClass> resources) throws Exception {
+	private OpSequence createPatternFromClasses(ArrayList<OntClass> resources, Var baseVariable) throws Exception {
 		OpSequence finalBP = OpSequence.create();
 		
 		Iterator<OntClass> it = resources.iterator();
 		OntProperty ontprop;
 		
+		System.out.println("Base variable "+baseVariable.toString());
+		
 		while( it.hasNext() ) {
 			OntClass ontclass = it.next();
 			ontprop = this.rdfType;
 			Op currentNode = null;
-			
+			Var variable = baseVariable;
+
 			ArrayList<OntClass> subclasses = getDirectSubClasses(ontclass);
 
 			if ( ontclass.isRestriction() ) {
+				
+				Var auxVariable = Var.alloc(createTemporaryVariableName());
+
 				ontprop = ((Restriction)ontclass).getOnProperty();
 				ArrayList<Resource> endpoints = getEndpointsThatMap((OntClass) ((SomeValuesFromRestriction)ontclass).getSomeValuesFrom());
 				
@@ -142,7 +151,7 @@ public class QueryExpander {
 				while( endpointIterator.hasNext() ) {
 					Resource i = endpointIterator.next();
 					
-					OpService service = createServiceNodeFromRestriction( i, (SomeValuesFromRestriction)ontclass );
+					OpService service = createServiceNodeFromRestriction( i, (SomeValuesFromRestriction)ontclass, variable, auxVariable );
 					
 					if ( currentNode == null ) {
 						currentNode =  service;
@@ -151,17 +160,25 @@ public class QueryExpander {
 						currentNode = new OpUnion( service, currentNode );
 					}
 				}
+				ontclass = (OntClass)((SomeValuesFromRestriction)ontclass).getSomeValuesFrom();
+
+				finalBP.add( currentNode );
+				finalBP.add( createPatternFromClasses( ontclass, auxVariable ) );
 				
-			} else if ( ontclass.isClass() ) {
+			} else {
+			
+				System.out.println("Variable is "+variable.toString());
+				
 				ArrayList<Resource> endpoints = getEndpointsThatMap(ontclass);
 	
 				// create an UNION querying all SERVICEs that implements the current class
 				Iterator<Resource> endpointIterator = endpoints.iterator();
 	
+				System.out.println("Getting endpoints for "+ontclass.getURI());
 				while( endpointIterator.hasNext() ) {
 					Resource i = endpointIterator.next();
 					
-					OpService service = createServiceNode( i, ontclass, ontprop );
+					OpService service = createServiceNode( i, ontclass, ontprop, variable );
 					
 					if ( currentNode == null ) {
 						currentNode =  service;
@@ -172,6 +189,7 @@ public class QueryExpander {
 				}
 				
 				// now the inference semantics
+				System.out.println("Getting subclasses of "+ontclass.getURI());
 				if ( subclasses != null ) {
 	
 					Iterator<OntClass> subclassesIterator = subclasses.iterator();
@@ -180,18 +198,19 @@ public class QueryExpander {
 						OntClass ontSubClass = subclassesIterator.next();
 						System.out.println(">>>" + ontSubClass.getURI());
 						OpSequence  subclassSequence;
-						
-						if( ontSubClass.isRestriction() ) {
-							// (prop some C) subclassof C
-							subclassSequence = createPatternFromRestriction((SomeValuesFromRestriction)ontSubClass);
-						} else 
+	
+	// rethink
+	//					if( ontSubClass.isRestriction() ) {
+	//						// (prop some C) subclassof C
+	//						subclassSequence = createPatternFromRestriction((SomeValuesFromRestriction)ontSubClass,variable);
+	//					} else 					
 						if( ontSubClass.isIntersectionClass() ) {
 							// A AND B subclassof C
-							subclassSequence = createPatternFromClasses(getIntersectionClasses(ontSubClass));
+							subclassSequence = createPatternFromClasses(getIntersectionClasses(ontSubClass),variable);
 						} else 
 						if ( ontSubClass.isClass() ) {
 							// A  subclassof C
-							subclassSequence = createPatternFromClasses(ontSubClass);
+							subclassSequence = createPatternFromClasses(ontSubClass,variable);
 						} else
 						{
 							throw new Exception("Can't deal with this class: "+ontSubClass.getRDFType());
@@ -206,9 +225,9 @@ public class QueryExpander {
 						
 					}// end while
 				}// end if subclasses
-			}// end if negócio
-			if ( currentNode != null ) {
-				finalBP.add(currentNode);
+				if ( currentNode != null ) {
+					finalBP.add(currentNode);
+				}
 			}
 			
 		}
@@ -216,36 +235,17 @@ public class QueryExpander {
 		
 	}
 
-	private OpSequence createPatternFromRestriction(SomeValuesFromRestriction ontSubClass) {
+	private OpSequence createPatternFromRestriction(SomeValuesFromRestriction ontSubClass, Var variable, Var auxVariable) {
 		BasicPattern b = new BasicPattern();
 
-		Var tmp = Var.alloc(createTemporaryVariableName());
-		
 		b.add( (new Triple(
-				Var.alloc("pct"),
+				variable,
 				ontSubClass.getOnProperty().asNode(),
-				tmp)
+				auxVariable)
 		));
-		
-		Op glump = new OpTriple( new Triple(
-				tmp,
-				this.rdfType.asNode(),
-				ontSubClass.getSomeValuesFrom().asNode()
-				));
-		
-		OntClass x= (OntClass) ontSubClass.getSomeValuesFrom();
-		Iterator<OntClass> subclasses = getDirectSubClasses(x).iterator();
-		while( subclasses.hasNext() ) {
-			glump = new OpUnion( glump, new OpTriple(new Triple(
-					tmp,
-					this.rdfType.asNode(),
-					subclasses.next().asNode()
-					)) );			
-		}
 		
 		OpSequence seq = OpSequence.create();
 		seq.add(new OpBGP(b));
-		seq.add( glump );
 		return seq;
 	}
 	
@@ -262,23 +262,24 @@ public class QueryExpander {
 	 * 
 	 * @param endpointURL
 	 * @param ontclass
+	 * @param variable 
 	 * @return
 	 */
-	private OpService createServiceNode(Resource endpointURL, OntClass ontclass, OntProperty prop) {
+	private OpService createServiceNode(Resource endpointURL, OntClass ontclass, OntProperty prop, Var variable) {
 		return new OpService(
 				endpointURL.asNode(),
 				(Op) new OpTriple(new Triple(
-						Var.alloc("pct"),
+						variable,
 						prop.asNode(),
 						ontclass.asNode()
 						)
 				), false );
 		}
 	
-	private OpService createServiceNodeFromRestriction( Resource endpointURL, SomeValuesFromRestriction ontSubClass ) {
+	private OpService createServiceNodeFromRestriction( Resource endpointURL, SomeValuesFromRestriction ontSubClass, Var variable, Var auxVariable ) {
 		return new OpService(
 				endpointURL.asNode(),
-				createPatternFromRestriction(ontSubClass),
+				createPatternFromRestriction(ontSubClass, variable, auxVariable),
 				false );
 	}
 	
@@ -304,12 +305,12 @@ public class QueryExpander {
 		return tmp1;
 	}
 
-	private OpSequence createPatternFromClasses(OntClass ontSubClass) throws Exception {
+	private OpSequence createPatternFromClasses(OntClass ontSubClass, Var baseVariable) throws Exception {
 		
 		ArrayList<OntClass> tmp = new ArrayList<OntClass>();
 		tmp.add(ontSubClass);
 		
-		return createPatternFromClasses(tmp);
+		return createPatternFromClasses(tmp,baseVariable);
 		
 	}
 
