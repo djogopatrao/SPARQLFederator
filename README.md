@@ -14,8 +14,6 @@ https://github.com/djogopatrao/SPARQLFederator/wiki
 Example
 =======
 
-You can try our live demo (see wiki page) or use the example contained here
-
 java -jar target/SPARQLFederator-1.1-SNAPSHOT-jar-with-dependencies.jar -domain_ontology examples/domain.owl -federation_ontology examples/federation.owl  -exec print -query 'http://www.cipe.accamargo.org.br/ontologias/domain.owl#A'
 
 "-exec print" will print the expanded query; "-exec run" would execute it and yield results (that is, if there are working endpoints as defined on example/federation.owl)
